@@ -21,6 +21,11 @@
             background: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
         }
 
+        .form-container {
+            backdrop-filter: blur(10px);
+            background-color: rgba(255, 255, 255, 0.95);
+        }
+
         .card-hover:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
@@ -91,22 +96,39 @@
                     <a href="#why" class="text-gray-700 hover:text-indigo-600 transition duration-300">Why</a>
                     <!-- Add id="login-dropdown-button" -->
                     <div x-data="{ open: false }" class="relative">
+                        <!-- Login Button -->
                         <button id="login-dropdown-button" @click="open = !open"
                             class="text-indigo-600 hover:text-indigo-700 font-medium transition duration-300">
                             Login
                         </button>
+
+                        <!-- Login Dropdown Card -->
                         <div x-show="open" @click.away="open = false" x-transition
-                            class="absolute right-0 mt-2 w-64 bg-gray-50 border border-gray-300 text-gray-900 rounded-md shadow-lg py-4 px-6 z-50">
+                            class="absolute right-0 mt-2 w-80 form-container bg-white border border-gray-300 rounded-lg shadow-lg py-6 px-8 z-50">
+
+
                             <form method="post">
                                 {% csrf_token %}
                                 {{ form.as_p|safe }}
                                 <button type="submit"
-                                    class="w-full mt-4 bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white font-bold py-2 px-4 rounded-lg transition-all">
+                                    class="w-full mt-4 bg-gradient-to-r from-indigo-500 to-indigo-700 hover:from-indigo-600 hover:to-indigo-800 text-white font-bold py-2 px-4 rounded-lg transition-all">
                                     Submit
                                 </button>
                             </form>
+
+                            <!-- Footer Link -->
+                            <div class="text-center mt-4">
+                                <p class="text-sm text-gray-600">
+                                    Don't have an account?
+                                    <a href="{% url 'register' %}"
+                                        class="font-medium text-indigo-600 hover:text-indigo-500 transition duration-300">
+                                        Register
+                                    </a>
+                                </p>
+                            </div>
                         </div>
                     </div>
+
                     <a href="{% url 'register' %}"
                         class="bg-indigo-600 text-white px-6 py-2 rounded-full hover:bg-indigo-700 transition duration-300 shadow-md hover:shadow-lg">
                         Register
