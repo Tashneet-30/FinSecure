@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
+from .models import personal, income, expenses, savings, assets, financial_goals, risk_profile
 
 class LoginForm(forms.Form):
     username = forms.CharField(
@@ -43,3 +44,41 @@ class RegisterForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['username', 'password1', 'password2']
+
+
+
+
+class PersonalForm(forms.ModelForm):
+    class Meta:
+        model = personal
+        fields = ['name', 'email', 'phone', 'age', 'retirement_age', 'marital_status', 'dependents']
+
+class IncomeForm(forms.ModelForm):
+    class Meta:
+        model = income
+        fields = ['monthly_income', 'other_sources', 'expected_salary_growth', 'employment_type', 'employer_contributions']
+
+class ExpensesForm(forms.ModelForm):
+    class Meta:
+        model = expenses
+        fields = ['monthly_expenses', 'annual_expenses', 'one_time_expenses', 'debt']
+
+class SavingsForm(forms.ModelForm):
+    class Meta:
+        model = savings
+        fields = ['current_savings', 'retirement_savings', 'investments', 'return_on_investments']
+
+class AssetsForm(forms.ModelForm):
+    class Meta:
+        model = assets
+        fields = ['real_estates', 'vehicles', 'liabilities', 'other_assets']
+
+class FinancialGoalsForm(forms.ModelForm):
+    class Meta:
+        model = financial_goals
+        fields = ['retirement_lifestyle']
+
+class RiskProfileForm(forms.ModelForm):
+    class Meta:
+        model = risk_profile
+        fields = ['risk_tolerance']

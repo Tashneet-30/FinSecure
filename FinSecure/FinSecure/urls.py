@@ -23,4 +23,10 @@ urlpatterns = [
     path('logout/', logout_view, name='logout'),
     path('', landing, name='landing'),
     path('register/', register, name='register'),
+    
+
+
+    path('financial-profile/', financial_profile_view, name='financial_profile_view'),
+    path('user-data/', user_data_form, name='user_data_form'),
+
 ]

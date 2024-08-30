@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Data Input</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs" defer></script>
+    <style>
+        .step {
+            display: none;
+        }
+        .active-step {
+            display: block;
+        }
+        .progress-bar {
+            width: calc(100% / 7 * var(--step));
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="max-w-3xl mx-auto py-10">
+        <div class="bg-white p-6 rounded-lg shadow-lg">
+            <!-- Progress Tracker -->
+            <div class="relative pt-1">
+                <div class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-blue-200">
+                    <div class="progress-bar shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-500" style="--step: 1;"></div>
+                </div>
+                <div class="text-center text-sm text-gray-600">Step <span x-text="step"></span> of 7</div>
+            </div>
+
+            <form id="userDataForm" x-data="formStep()">
+                <!-- Personal Information -->
+                <div x-show="step === 1" class="step active-step">
+                    <h2 class="text-lg font-semibold mb-4">Personal Information</h2>
+                    <label class="block mb-2">Name</label>
+                    <input type="text" name="name" class="w-full p-2 mb-4 border border-gray-300 rounded" required>
+
+                    <label class="block mb-2">Email</label>
+                    <input type="email" name="email" class="w-full p-2 mb-4 border border-gray-300 rounded" required>
+
+                    <label class="block mb-2">Phone</label>
+                    <input type="text" name="phone" class="w-full p-2 mb-4 border border-gray-300 rounded" required>
+
+                    <label class="block mb-2">Age</label>
+                    <input type="number" name="age" class="w-full p-2 mb-4 border border-gray-300 rounded" required>
+
+                    <label class="block mb-2">Retirement Age</label>
+                    <input type="number" name="retirement_age" class="w-full p-2 mb-4 border border-gray-300 rounded" required>
+
+                    <label class="block mb-2">Marital Status</label>
+                    <select name="marital_status" class="w-full p-2 mb-4 border border-gray-300 rounded" required>
+                        <option value="Single">Single</option>
+                        <option value="Married">Married</option>
+                        <option value="Divorced">Divorced</option>
+                        <option value="Widowed">Widowed</option>
+                    </select>
+
+                    <label class="block mb-2">Dependents</label>
+                    <input type="number" name="dependents" class="w-full p-2 mb-4 border border-gray-300 rounded" required>
+
+                    <div class="flex justify-end">
+                        <button type="button" @click="nextStep()" class="bg-blue-500 text-white px-4 py-2 rounded">Next</button>
+                    </div>
+                </div>
+
+                <!-- Income Information -->
+                <div x-show="step === 2" class="step">
+                    <h2 class="text-lg font-semibold mb-4">Income Information</h2>
+                    <label class="block mb-2">Monthly Income</label>
+                    <input type="number" name="monthly_income" class="w-full p-2 mb-4 border border-gray-300 rounded" required>
+
+                    <label class="block mb-2">Other Sources</label>
+                    <input type="number" name="other_sources" class="w-full p-2 mb-4 border border-gray-300 rounded">
+
+                    <label class="block mb-2">Expected Salary Growth (%)</label>
+                    <input type="number" name="expected_salary_growth" class="w-full p-2 mb-4 border border-gray-300 rounded" required>
+
+                    <label class="block mb-2">Employment Type</label>
+                    <input type="text" name="employment_type" class="w-full p-2 mb-4 border border-gray-300 rounded" required>
+
+                    <label class="block mb-2">Employer Contributions</label>
+                    <input type="number" name="employer_contributions" class="w-full p-2 mb-4 border border-gray-300 rounded" required>
+
+                    <div class="flex justify-between">
+                        <button type="button" @click="prevStep()" class="bg-gray-300 text-gray-700 px-4 py-2 rounded">Previous</button>
+                        <button type="button" @click="nextStep()" class="bg-blue-500 text-white px-4 py-2 rounded">Next</button>
+                    </div>
+                </div>
+
+                <!-- Expenses Information -->
+                <div x-show="step === 3" class="step">
+                    <h2 class="text-lg font-semibold mb-4">Expenses Information</h2>
+                    <label class="block mb-2">Monthly Expenses</label>
+                    <input type="number" name="monthly_expenses" class="w-full p-2 mb-4 border border-gray-300 rounded" required>
+
+                    <label class="block mb-2">Annual Expenses</label>
+                    <input type="number" name="annual_expenses" class="w-full p-2 mb-4 border border-gray-300 rounded" required>
+
+                    <label class="block mb-2">One-Time Expenses</label>
+                    <input type="number" name="one_time_expenses" class="w-full p-2 mb-4 border border-gray-300 rounded">
+
+                    <label class="block mb-2">Debt</label>
+                    <input type="number" name="debt" class="w-full p-2 mb-4 border border-gray-300 rounded">
+
+                    <div class="flex justify-between">
+                        <button type="button" @click="prevStep()" class="bg-gray-300 text-gray-700 px-4 py-2 rounded">Previous</button>
+                        <button type="button" @click="nextStep()" class="bg-blue-500 text-white px-4 py-2 rounded">Next</button>
+                    </div>
+                </div>
+
+                <!-- Savings Information -->
+                <div x-show="step === 4" class="step">
+                    <h2 class="text-lg font-semibold mb-4">Savings Information</h2>
+                    <label class="block mb-2">Current Savings</label>
+                    <input type="number" name="current_savings" class="w-full p-2 mb-4 border border-gray-300 rounded" required>
+
+                    <label class="block mb-2">Retirement Savings</label>
+                    <input type="number" name="retirement_savings" class="w-full p-2 mb-4 border border-gray-300 rounded" required>
+
+                    <label class="block mb-2">Investments</label>
+                    <input type="number" name="investments" class="w-full p-2 mb-4 border border-gray-300 rounded">
+
+                    <label class="block mb-2">Return on Investments (%)</label>
+                    <input type="number" name="return_on_investments" class="w-full p-2 mb-4 border border-gray-300 rounded" required>
+
+                    <div class="flex justify-between">
+                        <button type="button" @click="prevStep()" class="bg-gray-300 text-gray-700 px-4 py-2 rounded">Previous</button>
+                        <button type="button" @click="nextStep()" class="bg-blue-500 text-white px-4 py-2 rounded">Next</button>
+                    </div>
+                </div>
+
+                <!-- Assets Information -->
+                <div x-show="step === 5" class="step">
+                    <h2 class="text-lg font-semibold mb-4">Assets Information</h2>
+                    <label class="block mb-2">Real Estates</label>
+                    <input type="number" name="real_estates" class="w-full p-2 mb-4 border border-gray-300 rounded" required>
+
+                    <label class="block mb-2">Vehicles</label>
+                    <input type="number" name="vehicles" class="w-full p-2 mb-4 border border-gray-300 rounded" required>
+
+                    <label class="block mb-2">Liabilities</label>
+                    <input type="number" name="liabilities" class="w-full p-2 mb-4 border border-gray-300 rounded">
+
+                    <label class="block mb-2">Other Assets</label>
+                    <input type="number" name="other_assets" class="w-full p-2 mb-4 border border-gray-300 rounded">
+
+                    <div class="flex justify-between">
+                        <button type="button" @click="prevStep()" class="bg-gray-300 text-gray-700 px-4 py-2 rounded">Previous</button>
+                        <button type="button" @click="nextStep()" class="bg-blue-500 text-white px-4 py-2 rounded">Next</button>
+                    </div>
+                </div>
+
+                <!-- Future Goals -->
+                <div x-show="step === 6" class="step">
+                    <h2 class="text-lg font-semibold mb-4">Future Goals</h2>
+                    <label class="block mb-2">Retirement Goals</label>
+                    <input type="text" name="retirement_goals" class="w-full p-2 mb-4 border border-gray-300 rounded" required>
+
+                    <label class="block mb-2">Educational Goals</label>
+                    <input type="text" name="educational_goals" class="w-full p-2 mb-4 border border-gray-300 rounded">
+
+                    <label class="block mb-2">Travel Goals</label>
+                    <input type="text" name="travel_goals" class="w-full p-2 mb-4 border border-gray-300 rounded">
+
+                    <label class="block mb-2">Other Goals</label>
+                    <input type="text" name="other_goals" class="w-full p-2 mb-4 border border-gray-300 rounded">
+
+                    <div class="flex justify-between">
+                        <button type="button" @click="prevStep()" class="bg-gray-300 text-gray-700 px-4 py-2 rounded">Previous</button>
+                        <button type="button" @click="nextStep()" class="bg-blue-500 text-white px-4 py-2 rounded">Next</button>
+                    </div>
+                </div>
+
+                <!-- Review and Submit -->
+                <div x-show="step === 7" class="step">
+                    <h2 class="text-lg font-semibold mb-4">Review and Submit</h2>
+                    <div class="mb-4">
+                        <h3 class="text-lg font-semibold">Personal Information</h3>
+                        <p>Name: <span x-text="formData.name"></span></p>
+                        <p>Email: <span x-text="formData.email"></span></p>
+                        <p>Phone: <span x-text="formData.phone"></span></p>
+                        <p>Age: <span x-text="formData.age"></span></p>
+                        <p>Retirement Age: <span x-text="formData.retirement_age"></span></p>
+                        <p>Marital Status: <span x-text="formData.marital_status"></span></p>
+                        <p>Dependents: <span x-text="formData.dependents"></span></p>
+                    </div>
+                    <div class="mb-4">
+                        <h3 class="text-lg font-semibold">Income Information</h3>
+                        <p>Monthly Income: <span x-text="formData.monthly_income"></span></p>
+                        <p>Other Sources: <span x-text="formData.other_sources"></span></p>
+                        <p>Expected Salary Growth: <span x-text="formData.expected_salary_growth"></span>%</p>
+                        <p>Employment Type: <span x-text="formData.employment_type"></span></p>
+                        <p>Employer Contributions: <span x-text="formData.employer_contributions"></span></p>
+                    </div>
+                    <div class="mb-4">
+                        <h3 class="text-lg font-semibold">Expenses Information</h3>
+                        <p>Monthly Expenses: <span x-text="formData.monthly_expenses"></span></p>
+                        <p>Annual Expenses: <span x-text="formData.annual_expenses"></span></p>
+                        <p>One-Time Expenses: <span x-text="formData.one_time_expenses"></span></p>
+                        <p>Debt: <span x-text="formData.debt"></span></p>
+                    </div>
+                    <div class="mb-4">
+                        <h3 class="text-lg font-semibold">Savings Information</h3>
+                        <p>Current Savings: <span x-text="formData.current_savings"></span></p>
+                        <p>Retirement Savings: <span x-text="formData.retirement_savings"></span></p>
+                        <p>Investments: <span x-text="formData.investments"></span></p>
+                        <p>Return on Investments: <span x-text="formData.return_on_investments"></span>%</p>
+                    </div>
+                    <div class="mb-4">
+                        <h3 class="text-lg font-semibold">Assets Information</h3>
+                        <p>Real Estates: <span x-text="formData.real_estates"></span></p>
+                        <p>Vehicles: <span x-text="formData.vehicles"></span></p>
+                        <p>Liabilities: <span x-text="formData.liabilities"></span></p>
+                        <p>Other Assets: <span x-text="formData.other_assets"></span></p>
+                    </div>
+                    <div class="mb-4">
+                        <h3 class="text-lg font-semibold">Future Goals</h3>
+                        <p>Retirement Goals: <span x-text="formData.retirement_goals"></span></p>
+                        <p>Educational Goals: <span x-text="formData.educational_goals"></span></p>
+                        <p>Travel Goals: <span x-text="formData.travel_goals"></span></p>
+                        <p>Other Goals: <span x-text="formData.other_goals"></span></p>
+                    </div>
+
+                    <div class="flex justify-between">
+                        <button type="button" @click="prevStep()" class="bg-gray-300 text-gray-700 px-4 py-2 rounded">Previous</button>
+                        <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function formStep() {
+            return {
+                step: 1,
+                formData: {
+                    name: '',
+                    email: '',
+                    phone: '',
+                    age: '',
+                    retirement_age: '',
+                    marital_status: '',
+                    dependents: '',
+                    monthly_income: '',
+                    other_sources: '',
+                    expected_salary_growth: '',
+                    employment_type: '',
+                    employer_contributions: '',
+                    monthly_expenses: '',
+                    annual_expenses: '',
+                    one_time_expenses: '',
+                    debt: '',
+                    current_savings: '',
+                    retirement_savings: '',
+                    investments: '',
+                    return_on_investments: '',
+                    real_estates: '',
+                    vehicles: '',
+                    liabilities: '',
+                    other_assets: '',
+                    retirement_goals: '',
+                    educational_goals: '',
+                    travel_goals: '',
+                    other_goals: ''
+                },
+                nextStep() {
+                    this.step++;
+                    this.updateProgress();
+                },
+                prevStep() {
+                    this.step--;
+                    this.updateProgress();
+                },
+                updateProgress() {
+                    document.querySelector('.progress-bar').style.width = `calc(100% / 7 * ${this.step})`;
+                }
+            }
+        }
+    </script>
+</body>
+</html>
