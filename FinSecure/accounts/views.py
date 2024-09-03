@@ -1,30 +1,35 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
 from django.contrib import messages
-from .forms import *
 from django.contrib.auth import logout
-from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from .forms import PersonalForm, IncomeForm, ExpensesForm, SavingsForm, AssetsForm, FinancialGoalsForm, RiskProfileForm
-# Create your views here.
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from .forms import (
+    LoginForm, RegisterForm, PersonalForm, IncomeForm, ExpensesForm, 
+    SavingsForm, FinancialGoalsForm, RiskProfileForm, ReviewForm
+)
+from .models import Personal, Income, Expenses, Savings, Assets, FinancialGoals, RiskProfile
+from django.contrib.auth.models import User
 
 def logout_view(request):
     logout(request)
     return redirect('landing')
 
 def landing(request):
-    # If the user is already authenticated, redirect them to the financial profile view
-    # if request.user.is_authenticated:
-    #     return redirect('financial_profile_view')
+    if request.user.is_authenticated:
+        return redirect('financial_data_view')
 
     form = LoginForm(data=request.POST or None)
     if request.method == 'POST':
         if form.is_valid():
-            user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
+            user = authenticate(
+                username=form.cleaned_data['username'], 
+                password=form.cleaned_data['password']
+            )
             if user is not None:
                 login(request, user)
-                return redirect('financial_profile_view')  # Redirect to financial profile view after login
+                return redirect('financial_data_view')
             else:
                 messages.error(request, 'Invalid username or password')
         else:
@@ -33,104 +38,64 @@ def landing(request):
     return render(request, 'landing.html', {'form': form})
 
 def register(request):
-    form = RegisterForm(data=request.POST or None)  # Initialize the form for both GET and POST
+    form = RegisterForm(data=request.POST or None)
 
     if request.method == 'POST':
         if form.is_valid():
-            user = User.objects.create_user(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
+            user = User.objects.create_user(
+                username=form.cleaned_data['username'], 
+                password=form.cleaned_data['password1']
+            )
             user.save()
+            
             # Create related objects
-            personal.objects.get_or_create(user=user)
-            income.objects.get_or_create(user=user)
-            expenses.objects.get_or_create(user=user)
-            savings.objects.get_or_create(user=user)
-            assets.objects.get_or_create(user=user)
-            financial_goals.objects.get_or_create(user=user)
-            risk_profile.objects.get_or_create(user=user)
+            Personal.objects.create(user=user)
+            Income.objects.create(user=user)
+            Expenses.objects.create(user=user)
+            Savings.objects.create(user=user)
+            Assets.objects.create(user=user)
+            FinancialGoals.objects.create(user=user)
+            RiskProfile.objects.create(user=user)
+
             login(request, user)
             messages.success(request, 'Registration successful. Please log in.')
-            return redirect('landing')  # Redirect to landing page to log in
+            return redirect('landing')
         else:
             messages.error(request, 'Invalid registration details')
 
-    # Render the form in both GET and POST requests
     return render(request, 'register.html', {'form': form})
 
-
-
-
 @login_required
-def financial_profile_view(request):
-    step = int(request.GET.get('step', 1))
-
+def financial_data_view(request):
     if request.method == 'POST':
-        if step == 1:
-            form = PersonalForm(request.POST, instance=getattr(request.user, 'personal', None))
+        # Save the data based on the step
+        step = request.POST.get('step')
+        if step == '1':
+            form = PersonalForm(request.POST, instance=request.user.personal)
+        elif step == '2':
+            form = IncomeForm(request.POST, instance=request.user.income)
+        elif step == '3':
+            form = ExpensesForm(request.POST, instance=request.user.expenses)
+        elif step == '4':
+            form = SavingsForm(request.POST, instance=request.user.savings)
+        elif step == '5':
+            form = FinancialGoalsForm(request.POST, instance=request.user.financialgoals)
+        elif step == '6':
+            form = RiskProfileForm(request.POST, instance=request.user.riskprofile)
+        elif step == '7':
+            form = ReviewForm(request.POST)
             if form.is_valid():
-                form.save()
-                return redirect('financial_profile_view') + '?step=2'
-        
-        elif step == 2:
-            form = IncomeForm(request.POST, instance=getattr(request.user, 'income', None))
-            if form.is_valid():
-                form.save()
-                return redirect('financial_profile_view') + '?step=3'
-        
-        elif step == 3:
-            form = ExpensesForm(request.POST, instance=getattr(request.user, 'expenses', None))
-            if form.is_valid():
-                form.save()
-                return redirect('financial_profile_view') + '?step=4'
-        
-        elif step == 4:
-            form = SavingsForm(request.POST, instance=getattr(request.user, 'savings', None))
-            if form.is_valid():
-                form.save()
-                return redirect('financial_profile_view') + '?step=5'
-        
-        elif step == 5:
-            form = AssetsForm(request.POST, instance=getattr(request.user, 'assets', None))
-            if form.is_valid():
-                form.save()
-                return redirect('financial_profile_view') + '?step=6'
-        
-        elif step == 6:
-            form = FinancialGoalsForm(request.POST, instance=getattr(request.user, 'financial_goals', None))
-            if form.is_valid():
-                form.save()
-                return redirect('financial_profile_view') + '?step=7'
-        
-        elif step == 7:
-            form = RiskProfileForm(request.POST, instance=getattr(request.user, 'risk_profile', None))
-            if form.is_valid():
-                form.save()
-                return redirect('financial_profile_view') + '?step=8'
-    
+                messages.success(request, 'Data successfully saved!')
+                return redirect('some_success_url')
+            else:
+                messages.error(request, 'Invalid step')
+
+        if form and form.is_valid():
+            form.save()
+            return JsonResponse({'status': 'success'})
+        else:
+            errors = form.errors if form else {'step': 'Invalid step'}
+            return JsonResponse({'status': 'error', 'errors': errors})
     else:
-        # Handle GET request
-        forms = {
-            'personal_form': PersonalForm(instance=getattr(request.user, 'personal', None)),
-            'income_form': IncomeForm(instance=getattr(request.user, 'income', None)),
-            'expenses_form': ExpensesForm(instance=getattr(request.user, 'expenses', None)),
-            'savings_form': SavingsForm(instance=getattr(request.user, 'savings', None)),
-            'assets_form': AssetsForm(instance=getattr(request.user, 'assets', None)),
-            'financial_goals_form': FinancialGoalsForm(instance=getattr(request.user, 'financial_goals', None)),
-            'risk_profile_form': RiskProfileForm(instance=getattr(request.user, 'risk_profile', None)),
-        }
-
-    context = {
-        **forms,
-        'step': step,
-    }
-
-    return render(request, 'data.html', context)
-
-
-
-def user_data_form(request):
-    if request.method == 'POST':
-        form_data = request.POST
-        # Process form_data or save it to the database
-        print(form_data)  # You can handle the data as needed
-        return JsonResponse({'status': 'success'})
-    return render(request, 'user_data_form.html')
+        # Initial load or error handling
+        return render(request, 'data.html')

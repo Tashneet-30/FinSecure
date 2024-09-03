@@ -20,13 +20,10 @@ from accounts.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('logout/', logout_view, name='logout'),
     path('', landing, name='landing'),
     path('register/', register, name='register'),
-    
+    path('financial-data/', financial_data_view, name='financial_data_view'),
+    path('logout/', logout_view, name='logout_view'),
 
-
-    path('financial-profile/', financial_profile_view, name='financial_profile_view'),
-    path('user-data/', user_data_form, name='user_data_form'),
 
 ]
