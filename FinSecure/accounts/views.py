@@ -5,12 +5,13 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.core.exceptions import ObjectDoesNotExist
 from .forms import (
-    LoginForm, RegisterForm, PersonalForm, IncomeForm, ExpensesForm, 
-    SavingsForm, FinancialGoalsForm, RiskProfileForm, ReviewForm
+    LoginForm,RegisterForm,User,PersonalForm, IncomeForm, ExpensesForm, SavingsForm, 
+    AssetsForm, FinancialGoalsForm, RiskProfileForm, ReviewForm
 )
 from .models import Personal, Income, Expenses, Savings, Assets, FinancialGoals, RiskProfile
-from django.contrib.auth.models import User
+
 
 def logout_view(request):
     logout(request)
@@ -48,14 +49,7 @@ def register(request):
             )
             user.save()
             
-            # Create related objects
-            Personal.objects.create(user=user)
-            Income.objects.create(user=user)
-            Expenses.objects.create(user=user)
-            Savings.objects.create(user=user)
-            Assets.objects.create(user=user)
-            FinancialGoals.objects.create(user=user)
-            RiskProfile.objects.create(user=user)
+        
 
             login(request, user)
             messages.success(request, 'Registration successful. Please log in.')
@@ -64,38 +58,99 @@ def register(request):
             messages.error(request, 'Invalid registration details')
 
     return render(request, 'register.html', {'form': form})
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
+from django.forms import ValidationError
 
 @login_required
-def financial_data_view(request):
-    if request.method == 'POST':
-        # Save the data based on the step
-        step = request.POST.get('step')
-        if step == '1':
-            form = PersonalForm(request.POST, instance=request.user.personal)
-        elif step == '2':
-            form = IncomeForm(request.POST, instance=request.user.income)
-        elif step == '3':
-            form = ExpensesForm(request.POST, instance=request.user.expenses)
-        elif step == '4':
-            form = SavingsForm(request.POST, instance=request.user.savings)
-        elif step == '5':
-            form = FinancialGoalsForm(request.POST, instance=request.user.financialgoals)
-        elif step == '6':
-            form = RiskProfileForm(request.POST, instance=request.user.riskprofile)
-        elif step == '7':
-            form = ReviewForm(request.POST)
-            if form.is_valid():
-                messages.success(request, 'Data successfully saved!')
-                return redirect('some_success_url')
-            else:
-                messages.error(request, 'Invalid step')
+def submit_financial_data(request):
+     # Check the logged-in user
 
-        if form and form.is_valid():
-            form.save()
-            return JsonResponse({'status': 'success'})
+    # Initialize forms with user data if available, or empty forms
+    try:
+        personal_instance = Personal.objects.get(user=request.user)
+        income_instance = Income.objects.get(user=request.user)
+        expenses_instance = Expenses.objects.get(user=request.user)
+        savings_instance = Savings.objects.get(user=request.user)
+        assets_instance = Assets.objects.get(user=request.user)
+        financial_goals_instance = FinancialGoals.objects.get(user=request.user)
+        risk_profile_instance = RiskProfile.objects.get(user=request.user)
+
+        
+
+    except ObjectDoesNotExist:
+        # If instances don't exist, create new empty instances
+      
+        personal_instance = Personal(user=request.user)
+        income_instance = Income(user=request.user)
+        expenses_instance = Expenses(user=request.user)
+        savings_instance = Savings(user=request.user)
+        assets_instance = Assets(user=request.user)
+        financial_goals_instance = FinancialGoals(user=request.user)
+        risk_profile_instance = RiskProfile(user=request.user)
+
+    if request.method == 'POST':
+         # Debugging POST data
+
+        # Copy POST data and set defaults for missing fields
+        post_data = request.POST.copy()
+        post_data.setdefault('retirement_lifestyle', 'moderate')  # Default value for invalid choices
+
+        # Other defaults (add more as necessary)
+        post_data.setdefault('one_time_expenses', '0')
+        post_data.setdefault('debt', '0')
+        post_data.setdefault('retirement_savings', '0')
+        post_data.setdefault('investments', '0')
+        post_data.setdefault('return_on_investments', '0')
+        post_data.setdefault('real_estates', '0')
+        post_data.setdefault('vehicles', '0')
+        post_data.setdefault('liabilities', '0')
+        post_data.setdefault('other_assets', '0')
+
+        # Initialize forms with post data and instances
+        personal_form = PersonalForm(post_data, instance=personal_instance)
+        income_form = IncomeForm(post_data, instance=income_instance)
+        expenses_form = ExpensesForm(post_data, instance=expenses_instance)
+        savings_form = SavingsForm(post_data, instance=savings_instance)
+        assets_form = AssetsForm(post_data, instance=assets_instance)
+        financial_goals_form = FinancialGoalsForm(post_data, instance=financial_goals_instance)
+        risk_profile_form = RiskProfileForm(post_data, instance=risk_profile_instance)
+
+       
+            # Validate forms
+        if (personal_form.is_valid() and income_form.is_valid() and expenses_form.is_valid() and
+                savings_form.is_valid() and assets_form.is_valid() and financial_goals_form.is_valid() and
+                risk_profile_form.is_valid()):
+
+              
+                personal_form.save()
+                income_form.save()
+                expenses_form.save()
+                savings_form.save()
+                assets_form.save()
+                financial_goals_form.save()
+                risk_profile_form.save()
+
+              
+                return redirect('submit_financial_data')
         else:
-            errors = form.errors if form else {'step': 'Invalid step'}
-            return JsonResponse({'status': 'error', 'errors': errors})
-    else:
-        # Initial load or error handling
-        return render(request, 'data.html')
+       
+            personal_form = PersonalForm(instance=personal_instance)
+            income_form = IncomeForm(instance=income_instance)
+            expenses_form = ExpensesForm(instance=expenses_instance)
+            savings_form = SavingsForm(instance=savings_instance)
+            assets_form = AssetsForm(instance=assets_instance)
+            financial_goals_form = FinancialGoalsForm(instance=financial_goals_instance)
+            risk_profile_form = RiskProfileForm(instance=risk_profile_instance)
+
+        context = {
+            'personal_form': personal_form,
+            'income_form': income_form,
+            'expenses_form': expenses_form,
+            'savings_form': savings_form,
+            'assets_form': assets_form,
+            'financial_goals_form': financial_goals_form,
+            'risk_profile_form': risk_profile_form,
+        }
+    return render(request, 'data.html', context)

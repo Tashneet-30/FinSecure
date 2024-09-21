@@ -21,10 +21,6 @@
             background-color: rgba(255, 255, 255, 0.95);
         }
 
-        .hidden {
-            display: none;
-        }
-
         .progress-bar {
             display: flex;
             justify-content: space-between;
@@ -41,22 +37,10 @@
         .progress-step.active {
             background-color: #6366f1;
         }
-
-        @media (max-width: 640px) {
-            .progress-bar {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .progress-step {
-                margin-bottom: 5px;
-            }
-        }
     </style>
 </head>
 
 <body class="bg-gray-50">
-    <!-- Header Section -->
     <header class="bg-white backdrop-filter backdrop-blur-lg bg-opacity-30 fixed w-full z-50 transition duration-300 ease-in-out">
         <div class="container mx-auto px-6 py-4">
             <div class="flex justify-between items-center">
@@ -77,13 +61,11 @@
         </div>
     </header>
 
-    <!-- Main Content -->
     <main class="pt-32 pb-20 gradient-bg">
         <div class="container mx-auto px-6">
             <div class="bg-white p-10 rounded-lg shadow-lg form-container max-w-2xl mx-auto">
                 <h2 class="text-3xl font-bold mb-6 text-indigo-600">Secure Your Financial Data</h2>
 
-                <!-- Progress Tracker -->
                 <div class="progress-bar">
                     <div class="progress-step" id="stepIndicator1"></div>
                     <div class="progress-step" id="stepIndicator2"></div>
@@ -94,7 +76,6 @@
                     <div class="progress-step" id="stepIndicator7"></div>
                 </div>
 
-                <!-- Form Start -->
                 <form method="POST" id="financialForm">
                     {% csrf_token %}
 
@@ -176,122 +157,113 @@
                             <input type="number" id="monthly_expenses" name="monthly_expenses" class="w-full border rounded px-3 py-2" required>
                         </div>
                         <div class="mb-4">
-                            <label for="housing_expenses" class="block text-gray-700">Housing Expenses</label>
-                            <input type="number" id="housing_expenses" name="housing_expenses" class="w-full border rounded px-3 py-2" required>
-                        </div>
-                        <div class="mb-4">
-                            <label for="transportation_expenses" class="block text-gray-700">Transportation Expenses</label>
-                            <input type="number" id="transportation_expenses" name="transportation_expenses" class="w-full border rounded px-3 py-2" required>
-                        </div>
-                        <div class="mb-4">
-                            <label for="other_expenses" class="block text-gray-700">Other Expenses</label>
-                            <input type="number" id="other_expenses" name="other_expenses" class="w-full border rounded px-3 py-2" required>
+                            <label for="annual_expenses" class="block text-gray-700">Annual Expenses</label>
+                            <input type="number" id="annual_expenses" name="annual_expenses" class="w-full border rounded px-3 py-2" required>
                         </div>
                     </div>
+<!-- Continue from Step 4: Financial Goals -->
+<div id="step4" class="form-step hidden">
+    <h3 class="text-xl font-semibold mb-4">Financial Goals</h3>
+    <div class="mb-4">
+        <label for="short_term_goals" class="block text-gray-700">Short-term Goals</label>
+        <textarea id="short_term_goals" name="short_term_goals" class="w-full border rounded px-3 py-2"></textarea>
+    </div>
+    <div class="mb-4">
+        <label for="long_term_goals" class="block text-gray-700">Long-term Goals</label>
+        <textarea id="long_term_goals" name="long_term_goals" class="w-full border rounded px-3 py-2"></textarea>
+    </div>
+</div>
 
-                    <!-- Step 4: Savings Information -->
-                    <div id="step4" class="form-step hidden">
-                        <h3 class="text-xl font-semibold mb-4">Savings Information</h3>
-                        <div class="mb-4">
-                            <label for="savings_balance" class="block text-gray-700">Current Savings Balance</label>
-                            <input type="number" id="savings_balance" name="savings_balance" class="w-full border rounded px-3 py-2" required>
-                        </div>
-                        <div class="mb-4">
-                            <label for="savings_goal" class="block text-gray-700">Savings Goal</label>
-                            <input type="number" id="savings_goal" name="savings_goal" class="w-full border rounded px-3 py-2" required>
-                        </div>
-                        <div class="mb-4">
-                            <label for="expected_savings_growth" class="block text-gray-700">Expected Savings Growth (%)</label>
-                            <input type="number" id="expected_savings_growth" name="expected_savings_growth" class="w-full border rounded px-3 py-2" required>
-                        </div>
-                        <div class="mb-4">
-                            <label for="current_investments" class="block text-gray-700">Current Investments</label>
-                            <input type="number" id="current_investments" name="current_investments" class="w-full border rounded px-3 py-2" required>
-                        </div>
-                    </div>
+<!-- Step 5: Savings Information -->
+<div id="step5" class="form-step hidden">
+    <h3 class="text-xl font-semibold mb-4">Savings Information</h3>
+    <div class="mb-4">
+        <label for="current_savings" class="block text-gray-700">Current Savings</label>
+        <input type="number" id="current_savings" name="current_savings" class="w-full border rounded px-3 py-2">
+    </div>
+    <div class="mb-4">
+        <label for="monthly_savings" class="block text-gray-700">Monthly Savings</label>
+        <input type="number" id="monthly_savings" name="monthly_savings" class="w-full border rounded px-3 py-2">
+    </div>
+</div>
 
-                    <!-- Step 5: Debt Information -->
-                    <div id="step5" class="form-step hidden">
-                        <h3 class="text-xl font-semibold mb-4">Debt Information</h3>
-                        <div class="mb-4">
-                            <label for="current_debt" class="block text-gray-700">Current Debt</label>
-                            <input type="number" id="current_debt" name="current_debt" class="w-full border rounded px-3 py-2" required>
-                        </div>
-                        <div class="mb-4">
-                            <label for="debt_goal" class="block text-gray-700">Debt Repayment Goal</label>
-                            <input type="number" id="debt_goal" name="debt_goal" class="w-full border rounded px-3 py-2" required>
-                        </div>
-                        <div class="mb-4">
-                            <label for="expected_debt_reduction" class="block text-gray-700">Expected Debt Reduction (%)</label>
-                            <input type="number" id="expected_debt_reduction" name="expected_debt_reduction" class="w-full border rounded px-3 py-2" required>
-                        </div>
-                    </div>
+<!-- Step 6: Assets Information -->
+<div id="step6" class="form-step hidden">
+    <h3 class="text-xl font-semibold mb-4">Assets Information</h3>
+    <div class="mb-4">
+        <label for="total_assets" class="block text-gray-700">Total Assets</label>
+        <input type="number" id="total_assets" name="total_assets" class="w-full border rounded px-3 py-2">
+    </div>
+    <div class="mb-4">
+        <label for="real_estate" class="block text-gray-700">Real Estate Value</label>
+        <input type="number" id="real_estate" name="real_estate" class="w-full border rounded px-3 py-2">
+    </div>
+</div>
 
-                    <!-- Step 6: Risk Tolerance -->
-                    <div id="step6" class="form-step hidden">
-                        <h3 class="text-xl font-semibold mb-4">Risk Tolerance</h3>
-                        <div class="mb-4">
-                            <label for="risk_tolerance" class="block text-gray-700">Risk Tolerance</label>
-                            <select id="risk_tolerance" name="risk_tolerance" class="w-full border rounded px-3 py-2" required>
-                                <option value="">Select Risk Tolerance</option>
-                                <option value="Low">Low</option>
-                                <option value="Medium">Medium</option>
-                                <option value="High">High</option>
-                            </select>
-                        </div>
-                        <div class="mb-4">
-                            <label for="investment_preference" class="block text-gray-700">Investment Preference</label>
-                            <input type="text" id="investment_preference" name="investment_preference" class="w-full border rounded px-3 py-2" required>
-                        </div>
-                    </div>
+<!-- Step 7: Risk Profile -->
+<div id="step7" class="form-step hidden">
+    <h3 class="text-xl font-semibold mb-4">Risk Profile</h3>
+    <div class="mb-4">
+        <label for="risk_tolerance" class="block text-gray-700">Risk Tolerance</label>
+        <select id="risk_tolerance" name="risk_tolerance" class="w-full border rounded px-3 py-2">
+            <option value="">Select Risk Tolerance</option>
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+        </select>
+    </div>
+</div>
 
-                    <!-- Step 7: Final Review -->
-                    <div id="step7" class="form-step hidden">
-                        <h3 class="text-xl font-semibold mb-4">Review Your Information</h3>
-                        <div id="reviewSection">
-                            <!-- Review details will be dynamically filled by JavaScript -->
-                        </div>
-                        <div class="mt-4">
-                            <button type="submit" class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition duration-300">Submit</button>
-                        </div>
-                    </div>
+<!-- Navigation Buttons -->
+<div class="flex justify-between mt-6">
+    <button type="button" id="prevBtn" class="hidden bg-gray-500 text-white px-4 py-2 rounded" onclick="prevStep()">Previous</button>
+    <button type="button" id="nextBtn" class="bg-indigo-600 text-white px-4 py-2 rounded" onclick="nextStep()">Next</button>
+</div>
 
-                    <!-- Navigation Buttons -->
-                    <div class="flex justify-between mt-6">
-                        <button type="button" id="prevBtn" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-400 transition duration-300">Previous</button>
-                        <button type="button" id="nextBtn" class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition duration-300">Next</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </main>
+<!-- Submit Button (Only visible on the last step) -->
+<div id="submitBtnContainer" class="hidden mt-6">
+    <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded">Submit</button>
+</div>
 
-    <script>
-        let currentStep = 1;
+</form>
+</div>
+</div>
+</main>
 
-        function showStep(step) {
-            for (let i = 1; i <= 7; i++) {
-                document.getElementById(`step${i}`).classList.toggle('hidden', i !== step);
-                document.getElementById(`stepIndicator${i}`).classList.toggle('active', i <= step);
-            }
+<script>
+    let currentStep = 1;
+
+    function showStep(step) {
+        const steps = document.querySelectorAll('.form-step');
+        steps.forEach((stepDiv, index) => {
+            stepDiv.classList.toggle('hidden', index + 1 !== step);
+        });
+
+        // Manage progress bar
+        for (let i = 1; i <= steps.length; i++) {
+            document.getElementById(`stepIndicator${i}`).classList.toggle('active', i <= step);
         }
 
-        document.getElementById('nextBtn').addEventListener('click', function () {
-            if (currentStep < 7) {
-                currentStep++;
-                showStep(currentStep);
-            }
-        });
+        // Show/hide navigation buttons
+        document.getElementById('prevBtn').classList.toggle('hidden', step === 1);
+        document.getElementById('nextBtn').classList.toggle('hidden', step === steps.length);
+        document.getElementById('submitBtnContainer').classList.toggle('hidden', step !== steps.length);
+    }
 
-        document.getElementById('prevBtn').addEventListener('click', function () {
-            if (currentStep > 1) {
-                currentStep--;
-                showStep(currentStep);
-            }
-        });
-
+    function nextStep() {
+        currentStep++;
         showStep(currentStep);
-    </script>
-</body>
+    }
 
+    function prevStep() {
+        currentStep--;
+        showStep(currentStep);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        showStep(currentStep);
+    });
+</script>
+
+</body>
 </html>

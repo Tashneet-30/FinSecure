@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Financial Data</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+
+    <div class="container mx-auto p-5">
+        <h1 class="text-3xl font-bold text-center mb-5">Submit Your Financial Data</h1>
+
+        <form method="POST" class="bg-white p-6 rounded-lg shadow-lg">
+            {% csrf_token %}
+            
+            <h2 class="text-xl font-semibold mb-4">Personal Information</h2>
+            <div class="grid grid-cols-2 gap-4 mb-5">
+                <div>
+                    {{ personal_form.name.label_tag }}<br>
+                    {{ personal_form.name|add_class:"form-input w-full border-2 border-gray-300 rounded-md" }}
+                </div>
+                <div>
+                    {{ personal_form.email.label_tag }}<br>
+                    {{ personal_form.email|add_class:"form-input w-full border-2 border-gray-300 rounded-md" }}
+                </div>
+                <div>
+                    {{ personal_form.phone.label_tag }}<br>
+                    {{ personal_form.phone|add_class:"form-input w-full border-2 border-gray-300 rounded-md" }}
+                </div>
+                <div>
+                    {{ personal_form.age.label_tag }}<br>
+                    {{ personal_form.age|add_class:"form-input w-full border-2 border-gray-300 rounded-md" }}
+                </div>
+                <div>
+                    {{ personal_form.retirement_age.label_tag }}<br>
+                    {{ personal_form.retirement_age|add_class:"form-input w-full border-2 border-gray-300 rounded-md" }}
+                </div>
+                <div>
+                    {{ personal_form.marital_status.label_tag }}<br>
+                    {{ personal_form.marital_status|add_class:"form-input w-full border-2 border-gray-300 rounded-md" }}
+                </div>
+                <div>
+                    {{ personal_form.dependents.label_tag }}<br>
+                    {{ personal_form.dependents|add_class:"form-input w-full border-2 border-gray-300 rounded-md" }}
+                </div>
+            </div>
+
+            <h2 class="text-xl font-semibold mb-4">Income Information</h2>
+            <div class="grid grid-cols-2 gap-4 mb-5">
+                <div>
+                    {{ income_form.monthly_income.label_tag }}<br>
+                    {{ income_form.monthly_income|add_class:"form-input w-full border-2 border-gray-300 rounded-md" }}
+                </div>
+                <div>
+                    {{ income_form.other_sources.label_tag }}<br>
+                    {{ income_form.other_sources|add_class:"form-input w-full border-2 border-gray-300 rounded-md" }}
+                </div>
+                <div>
+                    {{ income_form.expected_salary_growth.label_tag }}<br>
+                    {{ income_form.expected_salary_growth|add_class:"form-input w-full border-2 border-gray-300 rounded-md" }}
+                </div>
+                <div>
+                    {{ income_form.employment_type.label_tag }}<br>
+                    {{ income_form.employment_type|add_class:"form-input w-full border-2 border-gray-300 rounded-md" }}
+                </div>
+                <div>
+                    {{ income_form.employer_contributions.label_tag }}<br>
+                    {{ income_form.employer_contributions|add_class:"form-input w-full border-2 border-gray-300 rounded-md" }}
+                </div>
+            </div>
+
+            <h2 class="text-xl font-semibold mb-4">Expenses Information</h2>
+            <div class="grid grid-cols-2 gap-4 mb-5">
+                <div>
+                    {{ expenses_form.monthly_expenses.label_tag }}<br>
+                    {{ expenses_form.monthly_expenses|add_class:"form-input w-full border-2 border-gray-300 rounded-md" }}
+                </div>
+                <div>
+                    {{ expenses_form.annual_expenses.label_tag }}<br>
+                    {{ expenses_form.annual_expenses|add_class:"form-input w-full border-2 border-gray-300 rounded-md" }}
+                </div>
+                <div>
+                    {{ expenses_form.one_time_expenses.label_tag }}<br>
+                    {{ expenses_form.one_time_expenses|add_class:"form-input w-full border-2 border-gray-300 rounded-md" }}
+                </div>
+                <div>
+                    {{ expenses_form.debt.label_tag }}<br>
+                    {{ expenses_form.debt|add_class:"form-input w-full border-2 border-gray-300 rounded-md" }}
+                </div>
+            </div>
+
+            <h2 class="text-xl font-semibold mb-4">Savings Information</h2>
+            <div class="grid grid-cols-2 gap-4 mb-5">
+                <div>
+                    {{ savings_form.current_savings.label_tag }}<br>
+                    {{ savings_form.current_savings|add_class:"form-input w-full border-2 border-gray-300 rounded-md" }}
+                </div>
+                <div>
+                    {{ savings_form.retirement_savings.label_tag }}<br>
+                    {{ savings_form.retirement_savings|add_class:"form-input w-full border-2 border-gray-300 rounded-md" }}
+                </div>
+                <div>
+                    {{ savings_form.investments.label_tag }}<br>
+                    {{ savings_form.investments|add_class:"form-input w-full border-2 border-gray-300 rounded-md" }}
+                </div>
+                <div>
+                    {{ savings_form.return_on_investments.label_tag }}<br>
+                    {{ savings_form.return_on_investments|add_class:"form-input w-full border-2 border-gray-300 rounded-md" }}
+                </div>
+            </div>
+
+            <h2 class="text-xl font-semibold mb-4">Assets Information</h2>
+            <div class="grid grid-cols-2 gap-4 mb-5">
+                <div>
+                    {{ assets_form.real_estates.label_tag }}<br>
+                    {{ assets_form.real_estates|add_class:"form-input w-full border-2 border-gray-300 rounded-md" }}
+                </div>
+                <div>
+                    {{ assets_form.vehicles.label_tag }}<br>
+                    {{ assets_form.vehicles|add_class:"form-input w-full border-2 border-gray-300 rounded-md" }}
+                </div>
+                <div>
+                    {{ assets_form.liabilities.label_tag }}<br>
+                    {{ assets_form.liabilities|add_class:"form-input w-full border-2 border-gray-300 rounded-md" }}
+                </div>
+                <div>
+                    {{ assets_form.other_assets.label_tag }}<br>
+                    {{ assets_form.other_assets|add_class:"form-input w-full border-2 border-gray-300 rounded-md" }}
+                </div>
+            </div>
+
+            <h2 class="text-xl font-semibold mb-4">Financial Goals</h2>
+            <div class="grid grid-cols-2 gap-4 mb-5">
+                <div>
+                    {{ financial_goals_form.retirement_lifestyle.label_tag }}<br>
+                    {{ financial_goals_form.retirement_lifestyle|add_class:"form-input w-full border-2 border-gray-300 rounded-md" }}
+                </div>
+            </div>
+
+            <h2 class="text-xl font-semibold mb-4">Risk Profile</h2>
+            <div class="grid grid-cols-2 gap-4 mb-5">
+                <div>
+                    {{ risk_profile_form.risk_tolerance.label_tag }}<br>
+                    {{ risk_profile_form.risk_tolerance|add_class:"form-input w-full border-2 border-gray-300 rounded-md" }}
+                </div>
+            </div>
+
+            <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg">
+                Submit Data
+            </button>
+        </form>
+    </div>
+
+</body>
+</html>
