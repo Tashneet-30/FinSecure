@@ -19,7 +19,7 @@ def logout_view(request):
 
 def landing(request):
     if request.user.is_authenticated:
-        return redirect('financial_data_view')
+        return redirect('submit_financial_data')
 
     form = LoginForm(data=request.POST or None)
     if request.method == 'POST':
@@ -65,7 +65,7 @@ from django.forms import ValidationError
 
 @login_required
 def submit_financial_data(request):
-     # Check the logged-in user
+    # Check the logged-in user
 
     # Initialize forms with user data if available, or empty forms
     try:
@@ -77,11 +77,8 @@ def submit_financial_data(request):
         financial_goals_instance = FinancialGoals.objects.get(user=request.user)
         risk_profile_instance = RiskProfile.objects.get(user=request.user)
 
-        
-
     except ObjectDoesNotExist:
         # If instances don't exist, create new empty instances
-      
         personal_instance = Personal(user=request.user)
         income_instance = Income(user=request.user)
         expenses_instance = Expenses(user=request.user)
@@ -91,7 +88,7 @@ def submit_financial_data(request):
         risk_profile_instance = RiskProfile(user=request.user)
 
     if request.method == 'POST':
-         # Debugging POST data
+        # Debugging POST data
 
         # Copy POST data and set defaults for missing fields
         post_data = request.POST.copy()
@@ -117,40 +114,39 @@ def submit_financial_data(request):
         financial_goals_form = FinancialGoalsForm(post_data, instance=financial_goals_instance)
         risk_profile_form = RiskProfileForm(post_data, instance=risk_profile_instance)
 
-       
-            # Validate forms
+        # Validate forms
         if (personal_form.is_valid() and income_form.is_valid() and expenses_form.is_valid() and
                 savings_form.is_valid() and assets_form.is_valid() and financial_goals_form.is_valid() and
                 risk_profile_form.is_valid()):
+            personal_form.save()
+            income_form.save()
+            expenses_form.save()
+            savings_form.save()
+            assets_form.save()
+            financial_goals_form.save()
+            risk_profile_form.save()
 
-              
-                personal_form.save()
-                income_form.save()
-                expenses_form.save()
-                savings_form.save()
-                assets_form.save()
-                financial_goals_form.save()
-                risk_profile_form.save()
+            return redirect('submit_financial_data')
 
-              
-                return redirect('submit_financial_data')
-        else:
-       
-            personal_form = PersonalForm(instance=personal_instance)
-            income_form = IncomeForm(instance=income_instance)
-            expenses_form = ExpensesForm(instance=expenses_instance)
-            savings_form = SavingsForm(instance=savings_instance)
-            assets_form = AssetsForm(instance=assets_instance)
-            financial_goals_form = FinancialGoalsForm(instance=financial_goals_instance)
-            risk_profile_form = RiskProfileForm(instance=risk_profile_instance)
+    else:
+        # Initialize empty forms with instance data for GET request
+        personal_form = PersonalForm(instance=personal_instance)
+        income_form = IncomeForm(instance=income_instance)
+        expenses_form = ExpensesForm(instance=expenses_instance)
+        savings_form = SavingsForm(instance=savings_instance)
+        assets_form = AssetsForm(instance=assets_instance)
+        financial_goals_form = FinancialGoalsForm(instance=financial_goals_instance)
+        risk_profile_form = RiskProfileForm(instance=risk_profile_instance)
 
-        context = {
-            'personal_form': personal_form,
-            'income_form': income_form,
-            'expenses_form': expenses_form,
-            'savings_form': savings_form,
-            'assets_form': assets_form,
-            'financial_goals_form': financial_goals_form,
-            'risk_profile_form': risk_profile_form,
-        }
+    # Define context to be used in both POST and GET requests
+    context = {
+        'personal_form': personal_form,
+        'income_form': income_form,
+        'expenses_form': expenses_form,
+        'savings_form': savings_form,
+        'assets_form': assets_form,
+        'financial_goals_form': financial_goals_form,
+        'risk_profile_form': risk_profile_form,
+    }
+
     return render(request, 'data.html', context)
