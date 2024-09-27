@@ -160,110 +160,136 @@
                             <label for="annual_expenses" class="block text-gray-700">Annual Expenses</label>
                             <input type="number" id="annual_expenses" name="annual_expenses" class="w-full border rounded px-3 py-2" required>
                         </div>
+                        <div class="mb-4">
+                            <label for="expected_expense_growth" class="block text-gray-700">Expected Expense Growth (%)</label>
+                            <input type="number" id="expected_expense_growth" name="expected_expense_growth" class="w-full border rounded px-3 py-2" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="debt" class="block text-gray-700">Total Debt</label>
+                            <input type="number" id="debt" name="debt" class="w-full border rounded px-3 py-2" required>
+                        </div>
                     </div>
-<!-- Continue from Step 4: Financial Goals -->
-<div id="step4" class="form-step hidden">
-    <h3 class="text-xl font-semibold mb-4">Financial Goals</h3>
-    <div class="mb-4">
-        <label for="short_term_goals" class="block text-gray-700">Short-term Goals</label>
-        <textarea id="short_term_goals" name="short_term_goals" class="w-full border rounded px-3 py-2"></textarea>
-    </div>
-    <div class="mb-4">
-        <label for="long_term_goals" class="block text-gray-700">Long-term Goals</label>
-        <textarea id="long_term_goals" name="long_term_goals" class="w-full border rounded px-3 py-2"></textarea>
-    </div>
-</div>
 
-<!-- Step 5: Savings Information -->
-<div id="step5" class="form-step hidden">
-    <h3 class="text-xl font-semibold mb-4">Savings Information</h3>
-    <div class="mb-4">
-        <label for="current_savings" class="block text-gray-700">Current Savings</label>
-        <input type="number" id="current_savings" name="current_savings" class="w-full border rounded px-3 py-2">
-    </div>
-    <div class="mb-4">
-        <label for="monthly_savings" class="block text-gray-700">Monthly Savings</label>
-        <input type="number" id="monthly_savings" name="monthly_savings" class="w-full border rounded px-3 py-2">
-    </div>
-</div>
+                    <!-- Step 4: Savings Information -->
+                    <div id="step4" class="form-step hidden">
+                        <h3 class="text-xl font-semibold mb-4">Savings Information</h3>
+                        <div class="mb-4">
+                            <label for="current_savings" class="block text-gray-700">Current Savings</label>
+                            <input type="number" id="current_savings" name="current_savings" class="w-full border rounded px-3 py-2" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="monthly_savings" class="block text-gray-700">Monthly Savings</label>
+                            <input type="number" id="monthly_savings" name="monthly_savings" class="w-full border rounded px-3 py-2" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="savings_growth_rate" class="block text-gray-700">Savings Growth Rate (%)</label>
+                            <input type="number" id="savings_growth_rate" name="savings_growth_rate" class="w-full border rounded px-3 py-2" required>
+                        </div>
+                    </div>
 
-<!-- Step 6: Assets Information -->
-<div id="step6" class="form-step hidden">
-    <h3 class="text-xl font-semibold mb-4">Assets Information</h3>
-    <div class="mb-4">
-        <label for="total_assets" class="block text-gray-700">Total Assets</label>
-        <input type="number" id="total_assets" name="total_assets" class="w-full border rounded px-3 py-2">
-    </div>
-    <div class="mb-4">
-        <label for="real_estate" class="block text-gray-700">Real Estate Value</label>
-        <input type="number" id="real_estate" name="real_estate" class="w-full border rounded px-3 py-2">
-    </div>
-</div>
+                    <!-- Step 5: Assets Information -->
+                    <div id="step5" class="form-step hidden">
+                        <h3 class="text-xl font-semibold mb-4">Assets Information</h3>
+                        <div class="mb-4">
+                            <label for="property_value" class="block text-gray-700">Property Value</label>
+                            <input type="number" id="property_value" name="property_value" class="w-full border rounded px-3 py-2" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="investment_value" class="block text-gray-700">Investment Value</label>
+                            <input type="number" id="investment_value" name="investment_value" class="w-full border rounded px-3 py-2" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="other_assets" class="block text-gray-700">Other Assets</label>
+                            <input type="number" id="other_assets" name="other_assets" class="w-full border rounded px-3 py-2" required>
+                        </div>
+                    </div>
 
-<!-- Step 7: Risk Profile -->
-<div id="step7" class="form-step hidden">
-    <h3 class="text-xl font-semibold mb-4">Risk Profile</h3>
-    <div class="mb-4">
-        <label for="risk_tolerance" class="block text-gray-700">Risk Tolerance</label>
-        <select id="risk_tolerance" name="risk_tolerance" class="w-full border rounded px-3 py-2">
-            <option value="">Select Risk Tolerance</option>
-            <option value="Low">Low</option>
-            <option value="Medium">Medium</option>
-            <option value="High">High</option>
-        </select>
-    </div>
-</div>
+                    <!-- Step 6: Financial Goals -->
+                    <div id="step6" class="form-step hidden">
+                        <h3 class="text-xl font-semibold mb-4">Financial Goals</h3>
+                        <div class="mb-4">
+                            <label for="goal" class="block text-gray-700">Financial Goal</label>
+                            <input type="text" id="goal" name="goal" class="w-full border rounded px-3 py-2" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="goal_amount" class="block text-gray-700">Goal Amount</label>
+                            <input type="number" id="goal_amount" name="goal_amount" class="w-full border rounded px-3 py-2" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="goal_timeframe" class="block text-gray-700">Goal Timeframe (years)</label>
+                            <input type="number" id="goal_timeframe" name="goal_timeframe" class="w-full border rounded px-3 py-2" required>
+                        </div>
+                    </div>
 
-<!-- Navigation Buttons -->
-<div class="flex justify-between mt-6">
-    <button type="button" id="prevBtn" class="hidden bg-gray-500 text-white px-4 py-2 rounded" onclick="prevStep()">Previous</button>
-    <button type="button" id="nextBtn" class="bg-indigo-600 text-white px-4 py-2 rounded" onclick="nextStep()">Next</button>
-</div>
+                    <!-- Step 7: Risk Profile -->
+                    <div id="step7" class="form-step hidden">
+                        <h3 class="text-xl font-semibold mb-4">Risk Profile</h3>
+                        <div class="mb-4">
+                            <label class="block text-gray-700">Risk Appetite</label>
+                            <div class="flex items-center">
+                                <input type="radio" id="low" name="risk_appetite" value="Low" class="mr-2" required>
+                                <label for="low" class="mr-4">Low</label>
+                                <input type="radio" id="medium" name="risk_appetite" value="Medium" class="mr-2">
+                                <label for="medium" class="mr-4">Medium</label>
+                                <input type="radio" id="high" name="risk_appetite" value="High" class="mr-2">
+                                <label for="high" class="mr-4">High</label>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="investment_experience" class="block text-gray-700">Investment Experience (years)</label>
+                            <input type="number" id="investment_experience" name="investment_experience" class="w-full border rounded px-3 py-2" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="investment_goals" class="block text-gray-700">Investment Goals</label>
+                            <input type="text" id="investment_goals" name="investment_goals" class="w-full border rounded px-3 py-2" required>
+                        </div>
+                    </div>
 
-<!-- Submit Button (Only visible on the last step) -->
-<div id="submitBtnContainer" class="hidden mt-6">
-    <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded">Submit</button>
-</div>
+                    <div class="flex justify-between mt-6">
+                        <button type="button" id="prevBtn" class="bg-gray-500 text-white px-4 py-2 rounded" style="display:none;">Previous</button>
+                        <button type="button" id="nextBtn" class="bg-indigo-600 text-white px-4 py-2 rounded">Next</button>
+                        <button type="submit" id="submitBtn" class="bg-green-600 text-white px-4 py-2 rounded hidden">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
 
-</form>
-</div>
-</div>
-</main>
-
-<script>
-    let currentStep = 1;
-
-    function showStep(step) {
+    <script>
+        let currentStep = 0;
         const steps = document.querySelectorAll('.form-step');
-        steps.forEach((stepDiv, index) => {
-            stepDiv.classList.toggle('hidden', index + 1 !== step);
-        });
+        const nextBtn = document.getElementById('nextBtn');
+        const prevBtn = document.getElementById('prevBtn');
+        const submitBtn = document.getElementById('submitBtn');
 
-        // Manage progress bar
-        for (let i = 1; i <= steps.length; i++) {
-            document.getElementById(`stepIndicator${i}`).classList.toggle('active', i <= step);
+        function showStep(step) {
+            steps.forEach((el, index) => {
+                el.classList.toggle('hidden', index !== step);
+            });
+            document.getElementById(`stepIndicator${step + 1}`).classList.add('active');
+            document.getElementById(`stepIndicator${step}`).classList.remove('active');
+            prevBtn.style.display = step === 0 ? 'none' : 'inline';
+            nextBtn.style.display = step === steps.length - 1 ? 'none' : 'inline';
+            submitBtn.style.display = step === steps.length - 1 ? 'inline' : 'none';
         }
 
-        // Show/hide navigation buttons
-        document.getElementById('prevBtn').classList.toggle('hidden', step === 1);
-        document.getElementById('nextBtn').classList.toggle('hidden', step === steps.length);
-        document.getElementById('submitBtnContainer').classList.toggle('hidden', step !== steps.length);
-    }
+        nextBtn.addEventListener('click', () => {
+            if (currentStep < steps.length - 1) {
+                currentStep++;
+                showStep(currentStep);
+            }
+        });
 
-    function nextStep() {
-        currentStep++;
+        prevBtn.addEventListener('click', () => {
+            if (currentStep > 0) {
+                currentStep--;
+                showStep(currentStep);
+            }
+        });
+
+        // Initialize the first step
         showStep(currentStep);
-    }
-
-    function prevStep() {
-        currentStep--;
-        showStep(currentStep);
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        showStep(currentStep);
-    });
-</script>
-
+    </script>
 </body>
+
 </html>
