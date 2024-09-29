@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from .utils.fields import EncryptedField
+
 
 class Personal(models.Model):
     MARITAL_STATUS_CHOICES = [

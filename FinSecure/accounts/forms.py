@@ -47,7 +47,6 @@ class RegisterForm(UserCreationForm):
 
 
 
-
 class PersonalForm(forms.ModelForm):
     class Meta:
         model = Personal

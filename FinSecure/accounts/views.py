@@ -6,11 +6,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
-from .forms import (
-    LoginForm,RegisterForm,User,PersonalForm, IncomeForm, ExpensesForm, SavingsForm, 
-    AssetsForm, FinancialGoalsForm, RiskProfileForm, ReviewForm
-)
-from .models import Personal, Income, Expenses, Savings, Assets, FinancialGoals, RiskProfile
+from .forms import *
+from .models import *
 
 
 def logout_view(request):
@@ -39,25 +36,22 @@ def landing(request):
     return render(request, 'landing.html', {'form': form})
 
 def register(request):
-    form = RegisterForm(data=request.POST or None)
-
     if request.method == 'POST':
+        form = RegisterForm(request.POST)
         if form.is_valid():
-            user = User.objects.create_user(
-                username=form.cleaned_data['username'], 
-                password=form.cleaned_data['password1']
-            )
-            user.save()
-            
-        
-
+            user = form.save()
             login(request, user)
+            print("User registered")
             messages.success(request, 'Registration successful. Please log in.')
             return redirect('landing')
         else:
             messages.error(request, 'Invalid registration details')
+    
+    else:
+        form = RegisterForm()
 
     return render(request, 'register.html', {'form': form})
+
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
@@ -65,9 +59,6 @@ from django.forms import ValidationError
 
 @login_required
 def submit_financial_data(request):
-    # Check the logged-in user
-
-    # Initialize forms with user data if available, or empty forms
     try:
         personal_instance = Personal.objects.get(user=request.user)
         income_instance = Income.objects.get(user=request.user)
@@ -78,7 +69,6 @@ def submit_financial_data(request):
         risk_profile_instance = RiskProfile.objects.get(user=request.user)
 
     except ObjectDoesNotExist:
-        # If instances don't exist, create new empty instances
         personal_instance = Personal(user=request.user)
         income_instance = Income(user=request.user)
         expenses_instance = Expenses(user=request.user)
@@ -88,13 +78,9 @@ def submit_financial_data(request):
         risk_profile_instance = RiskProfile(user=request.user)
 
     if request.method == 'POST':
-        # Debugging POST data
-
-        # Copy POST data and set defaults for missing fields
         post_data = request.POST.copy()
         post_data.setdefault('retirement_lifestyle', 'moderate')  # Default value for invalid choices
 
-        # Other defaults (add more as necessary)
         post_data.setdefault('one_time_expenses', '0')
         post_data.setdefault('debt', '0')
         post_data.setdefault('retirement_savings', '0')
@@ -105,7 +91,6 @@ def submit_financial_data(request):
         post_data.setdefault('liabilities', '0')
         post_data.setdefault('other_assets', '0')
 
-        # Initialize forms with post data and instances
         personal_form = PersonalForm(post_data, instance=personal_instance)
         income_form = IncomeForm(post_data, instance=income_instance)
         expenses_form = ExpensesForm(post_data, instance=expenses_instance)
@@ -114,7 +99,6 @@ def submit_financial_data(request):
         financial_goals_form = FinancialGoalsForm(post_data, instance=financial_goals_instance)
         risk_profile_form = RiskProfileForm(post_data, instance=risk_profile_instance)
 
-        # Validate forms
         if (personal_form.is_valid() and income_form.is_valid() and expenses_form.is_valid() and
                 savings_form.is_valid() and assets_form.is_valid() and financial_goals_form.is_valid() and
                 risk_profile_form.is_valid()):
@@ -129,7 +113,6 @@ def submit_financial_data(request):
             return redirect('submit_financial_data')
 
     else:
-        # Initialize empty forms with instance data for GET request
         personal_form = PersonalForm(instance=personal_instance)
         income_form = IncomeForm(instance=income_instance)
         expenses_form = ExpensesForm(instance=expenses_instance)
@@ -138,7 +121,6 @@ def submit_financial_data(request):
         financial_goals_form = FinancialGoalsForm(instance=financial_goals_instance)
         risk_profile_form = RiskProfileForm(instance=risk_profile_instance)
 
-    # Define context to be used in both POST and GET requests
     context = {
         'personal_form': personal_form,
         'income_form': income_form,
