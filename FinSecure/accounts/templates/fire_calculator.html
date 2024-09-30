@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinSecure - FIRE Calculator</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .fire-number-animation {
+            transition: all 2s cubic-bezier(0.17, 0.84, 0.44, 1);
+        }
+
+        .calculation-animation {
+            animation: calc-animation 2s ease-in-out;
+        }
+
+        @keyframes calc-animation {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.1);
+                opacity: 0.7;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .progress-bar {
+            transition: width 2s cubic-bezier(0.17, 0.84, 0.44, 1);
+        }
+
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0% {
+                transform: translate(0, 0px);
+            }
+
+            50% {
+                transform: translate(0, 15px);
+            }
+
+            100% {
+                transform: translate(0, -0px);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+    <header
+        class="bg-white backdrop-filter backdrop-blur-lg bg-opacity-30 fixed w-full z-50 transition duration-300 ease-in-out">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <a href="#" class="flex items-center space-x-3">
+                    <svg class="w-10 h-10 text-indigo-600" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img"
+                        class="iconify iconify--emojione" preserveAspectRatio="xMidYMid meet" fill="#000000">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <circle cx="32" cy="32" r="30" fill="#ffdd67"> </circle>
+                            <g fill="#664e27">
+                                <path
+                                    d="M19 20.8c0-2.4 5.3-1.3 7 .4c1-1.7.5-3.2.5-3.2s-1.5-1.1-3.8-1.5v-2.2c-1.8-.6-3.8 0-3.8 0v2.1s-3.6.7-3.6 4.4c0 4.9 7.4 3.9 7.4 7c0 2.3-5 1.3-7.4-.5c-.8 1.8 0 3.4 0 3.4c1.8.8 3.6 1 3.6 1v2s2 .6 3.8 0v-2.1s4.2-.2 4.2-3.8c.1-4.7-7.9-4.3-7.9-7">
+                                </path>
+                                <path
+                                    d="M41 20.8c0-2.4 5.3-1.3 7 .4c1-1.7.5-3.2.5-3.2s-1.5-1.1-3.8-1.5v-2.2c-1.8-.6-3.8 0-3.8 0v2.1s-3.6.7-3.6 4.4c0 4.9 7.4 3.9 7.4 7c0 2.3-5 1.3-7.4-.5c-.8 1.8 0 3.4 0 3.4c1.8.8 3.6 1 3.6 1v2s2 .6 3.8 0v-2.1s4.2-.2 4.2-3.8c.1-4.7-7.9-4.3-7.9-7">
+                                </path>
+                                <path d="M47.9 38H16.1c-.7 0-1.1.5-1.1 1c0 7.3 6 15 17 15s17-7.7 17-15c0-.5-.4-1-1.1-1">
+                                </path>
+                            </g>
+                            <path
+                                d="M41.2 44H22.8c-.7 0-.8.3-.8.8v4C22 57.6 26.5 62 32 62s10-4.4 10-13.2v-4c0-.5-.1-.8-.8-.8"
+                                fill="#74e063"> </path>
+                            <g fill="#449636">
+                                <path
+                                    d="M30.7 49.5c0-1.6 3.3-.8 4.4.3c.7-1.1.3-2.1.3-2.1s-1-.7-2.4-1v-1.5c-1.1-.4-2.4 0-2.4 0v1.4s-2.3.4-2.3 2.9c0 3.2 4.7 2.5 4.7 4.6c0 1.5-3.1.9-4.7-.3c-.5 1.2 0 2.2 0 2.2c1.1.5 2.3.7 2.3.7V58s1.2.4 2.4 0v-1.4s2.6-.2 2.6-2.5c.2-3.1-4.9-2.8-4.9-4.6">
+                                </path>
+                                <path
+                                    d="M39.6 44v3.5c0 8.3-3 12-7.6 12s-7.6-3.6-7.6-12V44h-.8v3.5c0 8.9 3.3 12.9 8.4 12.9c5.1 0 8.4-4 8.4-12.9V44h-.8">
+                                </path>
+                            </g>
+                        </g>
+                    </svg>
+                    <span
+                        class="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 tracking-tight">
+                        FinSecure
+                    </span>
+                </a>
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="#" class="text-gray-700 hover:text-indigo-600 transition duration-300">Dashboard</a>
+                    <a href="#" class="text-gray-700 hover:text-indigo-600 transition duration-300">FIRE Calculator</a>
+                    <a href="#" class="text-gray-700 hover:text-indigo-600 transition duration-300">Asset Allocation</a>
+                    <a href="#"
+                        class="text-indigo-600 hover:text-indigo-700 font-medium transition duration-300">Settings</a>
+                    <a href="#"
+                        class="bg-indigo-600 text-white px-6 py-2 rounded-full hover:bg-indigo-700 transition duration-300 shadow-md hover:shadow-lg">
+                        Logout
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="">
+        <section class="gradient-bg py-16">
+            <div class="container mx-auto px-6">
+                <h1 class="text-4xl mt-8 md:text-5xl font-bold text-white leading-tight mb-6">
+                    Your Path to Financial Independence
+                </h1>
+                <p class="text-xl text-gray-100 mb-8">Visualize your journey to early retirement with our advanced FIRE
+                    calculator.</p>
+            </div>
+        </section>
+
+        <section class="py-16">
+            <div class="container mx-auto px-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <div class="bg-white rounded-lg shadow-lg p-8 card-hover transition duration-300">
+                        <h2 class="text-2xl font-semibold text-gray-800 mb-6">Your Financial Data</h2>
+                        <div class="space-y-4">
+                            <p class="text-gray-600">We've gathered your financial information from your profile. Click
+                                the button below to see your FIRE calculations come to life!</p>
+                            <button id="calculate-fire"
+                                class="w-full bg-indigo-600 text-white px-6 py-3 rounded-full hover:bg-indigo-700 transition duration-300 shadow-md hover:shadow-lg">
+                                Calculate FIRE Number
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-lg p-8 card-hover transition duration-300">
+                        <h2 class="text-2xl font-semibold text-gray-800 mb-6">Your FIRE Journey</h2>
+                        <div id="fire-results">
+                            <div class="text-center mb-8">
+                                <p class="text-xl font-semibold text-gray-700 mb-2">Your FIRE Number</p>
+                                <div class="fire-number-animation text-5xl font-bold text-indigo-600" id="fire-number">
+                                    $0</div>
+                            </div>
+                            <div class="space-y-4">
+                                <div>
+                                    <p class="text-sm font-medium text-gray-700">Years to FIRE</p>
+                                    <div class="mt-1 relative pt-1">
+                                        <div class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-indigo-200">
+                                            <div id="years-to-fire-progress"
+                                                class="progress-bar shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-indigo-500"
+                                                style="width: 0%"></div>
+                                        </div>
+                                        <span id="years-to-fire" class="text-lg font-semibold text-gray-800">0
+                                            years</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-700">Savings Rate</p>
+                                    <div class="mt-1 relative pt-1">
+                                        <div class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-green-200">
+                                            <div id="savings-rate-progress"
+                                                class="progress-bar shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-green-500"
+                                                style="width: 0%"></div>
+                                        </div>
+                                        <span id="savings-rate" class="text-lg font-semibold text-gray-800">0%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-8">
+                                <canvas id="fire-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="calculation-animation"
+            class="fixed inset-0 bg-white/95 mt-8 flex items-center justify-center z-50 hidden">
+            <div
+                class="relative bg-gray-100 bg-opacity-95 backdrop-blur-lg border border-pink-200 rounded-3xl shadow-xl p-12 w-full max-w-2xl transform transition-all duration-700 ease-in-out hover:scale-105">
+                <!-- Soft gradient floating glow -->
+                <div class="absolute inset-0 flex justify-center items-center opacity-30">
+                    <div
+                        class="neon-orb w-48 h-48 bg-gradient-to-br from-pink-700 via-purple-700 to-indigo-900 rounded-full filter blur-2xl opacity-80 animate-pulse">
+                    </div>
+                </div>
+
+                <!-- Sleek calculation loader with gradient glow -->
+                <div class="relative flex flex-col items-center text-center z-10 space-y-8">
+                    <!-- Loader with smooth gradient ring -->
+                    <div class="relative mb-6">
+                        <div class="w-28 h-28 rounded-full border-t-4 border-indigo-400/70 animate-spin glow-ring">
+                        </div>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div
+                                class="w-20 h-20 rounded-full bg-gradient-to-r from-purple-400 to-indigo-300 shadow-inner animate-pulse">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Elegant animated gradient text -->
+                    <h3
+                        class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-300 to-indigo-500 animate-glow-text">
+                        Calculating Your Future...
+                    </h3>
+
+                    <!-- Light, modern description text -->
+                    <p class="text-md text-gray-600 font-semibold max-w-lg mx-auto">
+                        Hang tight while we generate your custom financial plan.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <style>
+            /* Loader glow effect with a soft gradient */
+            .glow-ring {
+                box-shadow: 0 0 10px 4px rgba(99, 102, 241, 0.6), 0 0 20px 8px rgba(173, 133, 255, 0.5);
+            }
+
+            /* Gradient neon orb pulsing */
+            .neon-orb {
+                animation: pulseOrb 6s infinite ease-in-out;
+            }
+
+            @keyframes pulseOrb {
+
+                0%,
+                100% {
+                    transform: scale(0.95);
+                    opacity: 0.7;
+                }
+
+                50% {
+                    transform: scale(1.05);
+                    opacity: 1;
+                }
+            }
+
+            /* Glowing gradient text animation */
+            @keyframes glowText {
+                0% {
+                    background-position: 0% 50%;
+                }
+
+                50% {
+                    background-position: 100% 50%;
+                }
+
+                100% {
+                    background-position: 0% 50%;
+                }
+            }
+
+            .animate-glow-text {
+                background-size: 200% 200%;
+                animation: glowText 4s ease infinite;
+            }
+        </style>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const calculateButton = document.getElementById('calculate-fire');
+            const calculationAnimation = document.getElementById('calculation-animation');
+            const fireNumber = document.getElementById('fire-number');
+            const yearsToFire = document.getElementById('years-to-fire');
+            const yearsToFireProgress = document.getElementById('years-to-fire-progress');
+            const savingsRate = document.getElementById('savings-rate');
+            const savingsRateProgress = document.getElementById('savings-rate-progress');
+            let chart;
+
+            calculateButton.addEventListener('click', () => {
+                calculationAnimation.classList.remove('hidden');
+                setTimeout(() => {
+                    calculationAnimation.classList.add('hidden');
+                    updateResults();
+                }, 5000);
+            });
+
+            function updateResults() {
+                animateNumber(fireNumber, 0, 1500000, 2000, '$');
+                animateNumber(yearsToFire, 0, 15, 2000, '', ' years');
+                animateNumber(savingsRate, 0, 35, 2000, '', '%');
+
+                setTimeout(() => {
+                    yearsToFireProgress.style.width = '60%';
+                    savingsRateProgress.style.width = '35%';
+                }, 100);
+
+                updateChart();
+            }
+
+            function animateNumber(element, start, end, duration, prefix = '', suffix = '') {
+                let startTimestamp = null;
+                const step = (timestamp) => {
+                    if (!startTimestamp) startTimestamp = timestamp;
+                    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                    const current = Math.floor(progress * (end - start) + start);
+                    element.textContent = `${prefix}${current.toLocaleString()}${suffix}`;
+                    if (progress < 1) {
+                        window.requestAnimationFrame(step);
+                    }
+                };
+                window.requestAnimationFrame(step);
+            }
+
+            function updateChart() {
+                const ctx = document.getElementById('fire-chart').getContext('2d');
+                if (chart) {
+                    chart.destroy();
+                }
+                chart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: Array.from({ length: 16 }, (_, i) => i),
+                        datasets: [{
+                            label: 'Net Worth',
+                            data: [100000, 200000, 350000, 500000, 700000, 900000, 1100000, 1300000, 1500000, 1700000, 1900000, 2100000, 2300000, 2500000, 2700000, 3000000],
+                            borderColor: 'rgb(99, 102, 241)',
+                            backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                mode: 'index',
+                                intersect: false,
+                            }
+                        },
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Years'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Net Worth ($)'
+                                },
+                                ticks: {
+                                    callback: function (value, index, values) {
+                                        return '$' + value.toLocaleString();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

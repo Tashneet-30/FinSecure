@@ -32,24 +32,29 @@ def decrypt_data(encrypted_data, key):
     return json.loads(decrypted_data)
 
 
-def logout(request):
+def logout_view(request):
     logout(request)
     return redirect('landing')
 
 def landing(request):
     if request.user.is_authenticated:
-        return redirect('submit_financial_data')
+        return redirect('dashboard')
 
     form = LoginForm(data=request.POST or None)
     if request.method == 'POST':
         if form.is_valid():
             user = authenticate(
                 username=form.cleaned_data['username'], 
-                password=form.cleaned_data['password']
+                password=form.cleaned_data['password'],
             )
+            encryption_key=form.cleaned_data['encryption_key']
             if user is not None:
                 login(request, user)
-                return redirect('submit_financial_data')
+                request.session['encryption_key'] = form.cleaned_data['encryption_key']
+                print("User logged in")
+                print("Encryption key:", encryption_key)
+                print("Session key:", request.session['encryption_key'])
+                return redirect('dashboard')
             else:
                 messages.error(request, 'Invalid username or password')
         else:
@@ -65,7 +70,7 @@ def register(request):
             login(request, user)
             print("User registered")
             messages.success(request, 'Registration successful. Please log in.')
-            return redirect('landing')
+            return redirect('submit_financial_data')
         else:
             messages.error(request, 'Invalid registration details')
     
@@ -233,7 +238,17 @@ def display_key(request):
 
 
 def dashboard(request):
-    return render(request, 'dashboard.html')
+    #decrypting name
+    key = request.session['encryption_key']
+    personal_instance = Personal.objects.get(user=request.user)
+    name = personal_instance.name
+    f = Fernet(key.encode())
+    decrypted_name = f.decrypt(name.encode()).decode()
+    print("\n Decrypted name:", decrypted_name)
+    context = {
+        'name': decrypted_name
+    }
+    return render(request, 'dashboard.html', context)
 
 # @login_required
 # def submit_financial_data(request):
