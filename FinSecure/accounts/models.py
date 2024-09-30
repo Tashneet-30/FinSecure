@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from .utils.fields import EncryptedField
 
 
 class Personal(models.Model):
@@ -12,13 +11,13 @@ class Personal(models.Model):
     ]
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=50)
-    email = models.EmailField()
-    phone = models.CharField(max_length=15)  # Increased length for phone numbers
-    age = models.IntegerField()
-    retirement_age = models.IntegerField()
-    marital_status = models.CharField(max_length=20, choices=MARITAL_STATUS_CHOICES)
-    dependents = models.IntegerField()
+    name = models.TextField()
+    email = models.TextField()
+    phone = models.TextField()
+    age = models.TextField()
+    retirement_age = models.TextField()
+    marital_status = models.TextField()
+    dependents = models.TextField()
 
     def __str__(self):
         return self.user.username
@@ -26,11 +25,11 @@ class Personal(models.Model):
 
 class Income(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    monthly_income = models.DecimalField(max_digits=10, decimal_places=2)  # Use DecimalField for financial data
-    other_sources = models.DecimalField(max_digits=10, decimal_places=2)
-    expected_salary_growth = models.DecimalField(max_digits=5, decimal_places=2)
-    employment_type = models.CharField(max_length=10)
-    employer_contributions = models.DecimalField(max_digits=10, decimal_places=2)
+    monthly_income = models.TextField()
+    other_sources = models.TextField()
+    expected_salary_growth = models.TextField()
+    employment_type = models.TextField()
+    employer_contributions = models.TextField()
     
     def __str__(self):
         return self.user.username
@@ -38,10 +37,10 @@ class Income(models.Model):
 
 class Expenses(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    monthly_expenses = models.DecimalField(max_digits=10, decimal_places=2)
-    annual_expenses = models.DecimalField(max_digits=10, decimal_places=2)
-    one_time_expenses = models.DecimalField(max_digits=10, decimal_places=2)
-    debt = models.DecimalField(max_digits=10, decimal_places=2)
+    monthly_expenses = models.TextField()
+    annual_expenses = models.TextField()
+    one_time_expenses = models.TextField()
+    debt = models.TextField()
     
     def __str__(self):
         return self.user.username
@@ -49,10 +48,10 @@ class Expenses(models.Model):
 
 class Savings(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    current_savings = models.DecimalField(max_digits=10, decimal_places=2)
-    retirement_savings = models.DecimalField(max_digits=10, decimal_places=2)
-    investments = models.DecimalField(max_digits=10, decimal_places=2)
-    return_on_investments = models.DecimalField(max_digits=10, decimal_places=2)
+    current_savings = models.TextField()
+    retirement_savings = models.TextField()
+    investments = models.TextField()
+    return_on_investments = models.TextField()
     
     def __str__(self):
         return self.user.username
@@ -60,10 +59,10 @@ class Savings(models.Model):
 
 class Assets(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    real_estates = models.DecimalField(max_digits=10, decimal_places=2)
-    vehicles = models.DecimalField(max_digits=10, decimal_places=2)
-    liabilities = models.DecimalField(max_digits=10, decimal_places=2)
-    other_assets = models.DecimalField(max_digits=10, decimal_places=2)
+    real_estates = models.TextField()
+    vehicles = models.TextField()
+    liabilities = models.TextField()
+    other_assets = models.TextField()
     
     def __str__(self):
         return self.user.username
