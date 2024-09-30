@@ -250,6 +250,43 @@ def dashboard(request):
     }
     return render(request, 'dashboard.html', context)
 
+def fire_number(request):
+    #calculating fire number
+    key = request.session['encryption_key']
+    personal_instance = Personal.objects.get(user=request.user)
+    income_instance = Income.objects.get(user=request.user)
+    expenses_instance = Expenses.objects.get(user=request.user)
+    savings_instance = Savings.objects.get(user=request.user)
+    assets_instance = Assets.objects.get(user=request.user)
+
+    f = Fernet(key.encode())
+
+    #decrypting data
+    monthly_income = f.decrypt(income_instance.monthly_income.encode()).decode()
+    monthly_expenses = f.decrypt(expenses_instance.monthly_expenses.encode()).decode()
+    current_savings = f.decrypt(savings_instance.current_savings.encode()).decode()
+    real_estates = f.decrypt(assets_instance.real_estates.encode()).decode()
+    vehicles = f.decrypt(assets_instance.vehicles.encode()).decode()
+    liabilities = f.decrypt(assets_instance.liabilities.encode()).decode()
+    other_assets = f.decrypt(assets_instance.other_assets.encode()).decode()
+
+    #calculating fire number
+    fire_number = (int(monthly_expenses) * 12) * 25
+    print("\n Fire number:", fire_number)
+
+    years_to_fire = (fire_number - int(current_savings)) / (int(monthly_income) * 12)
+    print("\n Years to fire:", years_to_fire)
+
+    savings_Rate = (int(current_savings) / (int(monthly_income) * 12)) * 100
+
+    context = {
+        'fire_number': fire_number,
+        'years_to_fire': int(years_to_fire),
+        'savings_rate': int(savings_Rate),
+    }
+
+    return render(request, 'fire_number.html', context)
+
 # @login_required
 # def submit_financial_data(request):
 #     if 'encryption_key' not in request.session:

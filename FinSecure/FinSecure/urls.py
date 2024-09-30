@@ -25,6 +25,7 @@ urlpatterns = [
     path('financial-data/', submit_financial_data, name='submit_financial_data'),
     path('display-data/', display_key, name='display_key'),
     path('dashboard/', dashboard, name='dashboard'),
+    path('fire_number/', fire_number, name='fire_number'),
 
     path('logout/', logout_view, name='logout'),
 

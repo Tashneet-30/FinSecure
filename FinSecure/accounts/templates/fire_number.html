@@ -294,6 +294,9 @@
             const yearsToFireProgress = document.getElementById('years-to-fire-progress');
             const savingsRate = document.getElementById('savings-rate');
             const savingsRateProgress = document.getElementById('savings-rate-progress');
+
+            // getting fire number from the backend
+
             let chart;
 
             calculateButton.addEventListener('click', () => {
@@ -305,9 +308,9 @@
             });
 
             function updateResults() {
-                animateNumber(fireNumber, 0, 1500000, 2000, '$');
-                animateNumber(yearsToFire, 0, 15, 2000, '', ' years');
-                animateNumber(savingsRate, 0, 35, 2000, '', '%');
+                animateNumber(fireNumber, 0, '{{ fire_number }}', 2000, '$');
+                animateNumber(yearsToFire, 0, '{{ years_to_fire }}', ' years');
+                animateNumber(savingsRate, 0, '{{ savings_rate }}', 2000, '', '%');
 
                 setTimeout(() => {
                     yearsToFireProgress.style.width = '60%';
