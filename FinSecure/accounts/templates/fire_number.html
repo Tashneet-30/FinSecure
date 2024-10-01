@@ -118,12 +118,14 @@
                     </span>
                 </a>
                 <nav class="hidden md:flex items-center space-x-8">
-                    <a href="#" class="text-gray-700 hover:text-indigo-600 transition duration-300">Dashboard</a>
-                    <a href="#" class="text-gray-700 hover:text-indigo-600 transition duration-300">FIRE Calculator</a>
+                    <a href="{% url 'dashboard' %}"
+                        class="text-gray-700 hover:text-indigo-600 transition duration-300">Dashboard</a>
+                    <a href="{% url 'fire_number' %}"
+                        class="text-indigo-600 hover:text-indigo-700 font-medium transition duration-300">FIRE
+                        Calculator</a>
                     <a href="#" class="text-gray-700 hover:text-indigo-600 transition duration-300">Asset Allocation</a>
-                    <a href="#"
-                        class="text-indigo-600 hover:text-indigo-700 font-medium transition duration-300">Settings</a>
-                    <a href="#"
+                    <a href="#" class="text-gray-700 hover:text-indigo-600 transition duration-300">Settings</a>
+                    <a href="{% url 'logout' %}"
                         class="bg-indigo-600 text-white px-6 py-2 rounded-full hover:bg-indigo-700 transition duration-300 shadow-md hover:shadow-lg">
                         Logout
                     </a>
@@ -163,7 +165,7 @@
                             <div class="text-center mb-8">
                                 <p class="text-xl font-semibold text-gray-700 mb-2">Your FIRE Number</p>
                                 <div class="fire-number-animation text-5xl font-bold text-indigo-600" id="fire-number">
-                                    $0</div>
+                                    ₹0</div>
                             </div>
                             <div class="space-y-4">
                                 <div>
@@ -308,8 +310,8 @@
             });
 
             function updateResults() {
-                animateNumber(fireNumber, 0, '{{ fire_number }}', 2000, '$');
-                animateNumber(yearsToFire, 0, '{{ years_to_fire }}', ' years');
+                animateNumber(fireNumber, 0, '{{ fire_number }}', 2000, '₹');
+                animateNumber(yearsToFire, 0, '{{ years_to_fire }}', 2000, '', ' years');
                 animateNumber(savingsRate, 0, '{{ savings_rate }}', 2000, '', '%');
 
                 setTimeout(() => {

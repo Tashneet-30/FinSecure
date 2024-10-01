@@ -57,6 +57,9 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'FinSecure.urls'
 
+SESSION_EXPIRE_AT_BROWSER_CLOSE=True
+SESSION_COOKIE_AGE=1800
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

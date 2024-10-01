@@ -101,14 +101,18 @@
                     </p>
                 </div>
 
-                <div class="bg-gray-100 p-4 rounded-lg mb-4">
+                <div class="relative bg-gray-100 p-4 rounded-lg mb-4">
                     <p id="encryptionKey" class="font-mono break-all">{{ encryption_key }}</p>
+                    <button id="copyButton"
+                        class="absolute top-2 right-2 text-indigo-600 hover:text-indigo-700 transition duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                            class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M8 12h.01M12 12h.01M16 12h.01M9 16h6m2 4H7a2 2 0 01-2-2V7a2 2 0 012-2h3.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V18a2 2 0 01-2 2z" />
+                        </svg>
+                    </button>
                 </div>
 
-                <button id="copyButton"
-                    class="bg-indigo-600 mb-8 text-white px-4 py-2 rounded hover:bg-indigo-700 transition duration-300">
-                    Copy to Clipboard
-                </button>
 
 
                 <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-8" role="alert">

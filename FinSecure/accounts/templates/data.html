@@ -41,21 +41,51 @@
 </head>
 
 <body class="bg-gray-50">
-    <header class="bg-white backdrop-filter backdrop-blur-lg bg-opacity-30 fixed w-full z-50 transition duration-300 ease-in-out">
+    <header
+        class="bg-white backdrop-filter backdrop-blur-lg bg-opacity-30 fixed w-full z-50 transition duration-300 ease-in-out">
         <div class="container mx-auto px-6 py-4">
             <div class="flex justify-between items-center">
                 <a href="#" class="flex items-center space-x-3">
-                    <svg class="w-10 h-10 text-indigo-600" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                        <!-- SVG Content -->
+                    <svg class="w-10 h-10 text-indigo-600" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img"
+                        class="iconify iconify--emojione" preserveAspectRatio="xMidYMid meet" fill="#000000">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <circle cx="32" cy="32" r="30" fill="#ffdd67"> </circle>
+                            <g fill="#664e27">
+                                <path
+                                    d="M19 20.8c0-2.4 5.3-1.3 7 .4c1-1.7.5-3.2.5-3.2s-1.5-1.1-3.8-1.5v-2.2c-1.8-.6-3.8 0-3.8 0v2.1s-3.6.7-3.6 4.4c0 4.9 7.4 3.9 7.4 7c0 2.3-5 1.3-7.4-.5c-.8 1.8 0 3.4 0 3.4c1.8.8 3.6 1 3.6 1v2s2 .6 3.8 0v-2.1s4.2-.2 4.2-3.8c.1-4.7-7.9-4.3-7.9-7">
+                                </path>
+                                <path
+                                    d="M41 20.8c0-2.4 5.3-1.3 7 .4c1-1.7.5-3.2.5-3.2s-1.5-1.1-3.8-1.5v-2.2c-1.8-.6-3.8 0-3.8 0v2.1s-3.6.7-3.6 4.4c0 4.9 7.4 3.9 7.4 7c0 2.3-5 1.3-7.4-.5c-.8 1.8 0 3.4 0 3.4c1.8.8 3.6 1 3.6 1v2s2 .6 3.8 0v-2.1s4.2-.2 4.2-3.8c.1-4.7-7.9-4.3-7.9-7">
+                                </path>
+                                <path d="M47.9 38H16.1c-.7 0-1.1.5-1.1 1c0 7.3 6 15 17 15s17-7.7 17-15c0-.5-.4-1-1.1-1">
+                                </path>
+                            </g>
+                            <path
+                                d="M41.2 44H22.8c-.7 0-.8.3-.8.8v4C22 57.6 26.5 62 32 62s10-4.4 10-13.2v-4c0-.5-.1-.8-.8-.8"
+                                fill="#74e063"> </path>
+                            <g fill="#449636">
+                                <path
+                                    d="M30.7 49.5c0-1.6 3.3-.8 4.4.3c.7-1.1.3-2.1.3-2.1s-1-.7-2.4-1v-1.5c-1.1-.4-2.4 0-2.4 0v1.4s-2.3.4-2.3 2.9c0 3.2 4.7 2.5 4.7 4.6c0 1.5-3.1.9-4.7-.3c-.5 1.2 0 2.2 0 2.2c1.1.5 2.3.7 2.3.7V58s1.2.4 2.4 0v-1.4s2.6-.2 2.6-2.5c.2-3.1-4.9-2.8-4.9-4.6">
+                                </path>
+                                <path
+                                    d="M39.6 44v3.5c0 8.3-3 12-7.6 12s-7.6-3.6-7.6-12V44h-.8v3.5c0 8.9 3.3 12.9 8.4 12.9c5.1 0 8.4-4 8.4-12.9V44h-.8">
+                                </path>
+                            </g>
+                        </g>
                     </svg>
-                    <span class="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 tracking-tight">
+                    <span
+                        class="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 tracking-tight">
                         FinSecure
                     </span>
                 </a>
                 <nav class="hidden md:flex items-center space-x-8">
-                    <a href="{% url 'landing' %}" class="text-gray-700 hover:text-indigo-600 transition duration-300">Home</a>
-                    <a href="#features" class="text-gray-700 hover:text-indigo-600 transition duration-300">Features</a>
-                    <a href="#why" class="text-gray-700 hover:text-indigo-600 transition duration-300">Why</a>
+                    <a href="{% url 'logout' %}"
+                        class="bg-indigo-600 text-white px-6 py-2 rounded-full hover:bg-indigo-700 transition duration-300 shadow-md hover:shadow-lg">
+                        Logout
+                    </a>
                 </nav>
             </div>
         </div>
@@ -88,7 +118,8 @@
                         </div>
                         <div class="mb-4">
                             <label for="email" class="block text-gray-700">Email</label>
-                            <input type="email" id="email" name="email" class="w-full border rounded px-3 py-2" required>
+                            <input type="email" id="email" name="email" class="w-full border rounded px-3 py-2"
+                                required>
                         </div>
                         <div class="mb-4">
                             <label for="phone" class="block text-gray-700">Phone Number</label>
@@ -100,11 +131,13 @@
                         </div>
                         <div class="mb-4">
                             <label for="retirement_age" class="block text-gray-700">Retirement Age</label>
-                            <input type="number" id="retirement_age" name="retirement_age" class="w-full border rounded px-3 py-2" required>
+                            <input type="number" id="retirement_age" name="retirement_age"
+                                class="w-full border rounded px-3 py-2" required>
                         </div>
                         <div class="mb-4">
                             <label for="marital_status" class="block text-gray-700">Marital Status</label>
-                            <select id="marital_status" name="marital_status" class="w-full border rounded px-3 py-2" required>
+                            <select id="marital_status" name="marital_status" class="w-full border rounded px-3 py-2"
+                                required>
                                 <option value="">Select Marital Status</option>
                                 <option value="Single">Single</option>
                                 <option value="Married">Married</option>
@@ -114,7 +147,8 @@
                         </div>
                         <div class="mb-4">
                             <label for="dependents" class="block text-gray-700">Dependents</label>
-                            <input type="number" id="dependents" name="dependents" class="w-full border rounded px-3 py-2" required>
+                            <input type="number" id="dependents" name="dependents"
+                                class="w-full border rounded px-3 py-2" required>
                         </div>
                     </div>
 
@@ -123,19 +157,24 @@
                         <h3 class="text-xl font-semibold mb-4">Income Information</h3>
                         <div class="mb-4">
                             <label for="monthly_income" class="block text-gray-700">Monthly Income</label>
-                            <input type="number" id="monthly_income" name="monthly_income" class="w-full border rounded px-3 py-2" required>
+                            <input type="number" id="monthly_income" name="monthly_income"
+                                class="w-full border rounded px-3 py-2" required>
                         </div>
                         <div class="mb-4">
                             <label for="other_sources" class="block text-gray-700">Other Sources of Income</label>
-                            <input type="number" id="other_sources" name="other_sources" class="w-full border rounded px-3 py-2" required>
+                            <input type="number" id="other_sources" name="other_sources"
+                                class="w-full border rounded px-3 py-2" required>
                         </div>
                         <div class="mb-4">
-                            <label for="expected_salary_growth" class="block text-gray-700">Expected Salary Growth (%)</label>
-                            <input type="number" id="expected_salary_growth" name="expected_salary_growth" class="w-full border rounded px-3 py-2" required>
+                            <label for="expected_salary_growth" class="block text-gray-700">Expected Salary Growth
+                                (%)</label>
+                            <input type="number" id="expected_salary_growth" name="expected_salary_growth"
+                                class="w-full border rounded px-3 py-2" required>
                         </div>
                         <div class="mb-4">
                             <label for="employment_type" class="block text-gray-700">Employment Type</label>
-                            <select id="employment_type" name="employment_type" class="w-full border rounded px-3 py-2" required>
+                            <select id="employment_type" name="employment_type" class="w-full border rounded px-3 py-2"
+                                required>
                                 <option value="">Select Employment Type</option>
                                 <option value="Full-Time">Full-Time</option>
                                 <option value="Part-Time">Part-Time</option>
@@ -144,8 +183,10 @@
                             </select>
                         </div>
                         <div class="mb-4">
-                            <label for="employer_contributions" class="block text-gray-700">Employer Contributions</label>
-                            <input type="number" id="employer_contributions" name="employer_contributions" class="w-full border rounded px-3 py-2" required>
+                            <label for="employer_contributions" class="block text-gray-700">Employer
+                                Contributions</label>
+                            <input type="number" id="employer_contributions" name="employer_contributions"
+                                class="w-full border rounded px-3 py-2" required>
                         </div>
                     </div>
 
@@ -154,15 +195,19 @@
                         <h3 class="text-xl font-semibold mb-4">Expenses Information</h3>
                         <div class="mb-4">
                             <label for="monthly_expenses" class="block text-gray-700">Monthly Expenses</label>
-                            <input type="number" id="monthly_expenses" name="monthly_expenses" class="w-full border rounded px-3 py-2" required>
+                            <input type="number" id="monthly_expenses" name="monthly_expenses"
+                                class="w-full border rounded px-3 py-2" required>
                         </div>
                         <div class="mb-4">
                             <label for="annual_expenses" class="block text-gray-700">Annual Expenses</label>
-                            <input type="number" id="annual_expenses" name="annual_expenses" class="w-full border rounded px-3 py-2" required>
+                            <input type="number" id="annual_expenses" name="annual_expenses"
+                                class="w-full border rounded px-3 py-2" required>
                         </div>
                         <div class="mb-4">
-                            <label for="expected_expense_growth" class="block text-gray-700">Expected Expense Growth (%)</label>
-                            <input type="number" id="expected_expense_growth" name="expected_expense_growth" class="w-full border rounded px-3 py-2" required>
+                            <label for="expected_expense_growth" class="block text-gray-700">Expected Expense Growth
+                                (%)</label>
+                            <input type="number" id="expected_expense_growth" name="expected_expense_growth"
+                                class="w-full border rounded px-3 py-2" required>
                         </div>
                         <div class="mb-4">
                             <label for="debt" class="block text-gray-700">Total Debt</label>
@@ -175,15 +220,18 @@
                         <h3 class="text-xl font-semibold mb-4">Savings Information</h3>
                         <div class="mb-4">
                             <label for="current_savings" class="block text-gray-700">Current Savings</label>
-                            <input type="number" id="current_savings" name="current_savings" class="w-full border rounded px-3 py-2" required>
+                            <input type="number" id="current_savings" name="current_savings"
+                                class="w-full border rounded px-3 py-2" required>
                         </div>
                         <div class="mb-4">
                             <label for="monthly_savings" class="block text-gray-700">Monthly Savings</label>
-                            <input type="number" id="monthly_savings" name="monthly_savings" class="w-full border rounded px-3 py-2" required>
+                            <input type="number" id="monthly_savings" name="monthly_savings"
+                                class="w-full border rounded px-3 py-2" required>
                         </div>
                         <div class="mb-4">
                             <label for="savings_growth_rate" class="block text-gray-700">Savings Growth Rate (%)</label>
-                            <input type="number" id="savings_growth_rate" name="savings_growth_rate" class="w-full border rounded px-3 py-2" required>
+                            <input type="number" id="savings_growth_rate" name="savings_growth_rate"
+                                class="w-full border rounded px-3 py-2" required>
                         </div>
                     </div>
 
@@ -192,15 +240,18 @@
                         <h3 class="text-xl font-semibold mb-4">Assets Information</h3>
                         <div class="mb-4">
                             <label for="property_value" class="block text-gray-700">Property Value</label>
-                            <input type="number" id="property_value" name="property_value" class="w-full border rounded px-3 py-2" required>
+                            <input type="number" id="property_value" name="property_value"
+                                class="w-full border rounded px-3 py-2" required>
                         </div>
                         <div class="mb-4">
                             <label for="investment_value" class="block text-gray-700">Investment Value</label>
-                            <input type="number" id="investment_value" name="investment_value" class="w-full border rounded px-3 py-2" required>
+                            <input type="number" id="investment_value" name="investment_value"
+                                class="w-full border rounded px-3 py-2" required>
                         </div>
                         <div class="mb-4">
                             <label for="other_assets" class="block text-gray-700">Other Assets</label>
-                            <input type="number" id="other_assets" name="other_assets" class="w-full border rounded px-3 py-2" required>
+                            <input type="number" id="other_assets" name="other_assets"
+                                class="w-full border rounded px-3 py-2" required>
                         </div>
                     </div>
 
@@ -213,11 +264,13 @@
                         </div>
                         <div class="mb-4">
                             <label for="goal_amount" class="block text-gray-700">Goal Amount</label>
-                            <input type="number" id="goal_amount" name="goal_amount" class="w-full border rounded px-3 py-2" required>
+                            <input type="number" id="goal_amount" name="goal_amount"
+                                class="w-full border rounded px-3 py-2" required>
                         </div>
                         <div class="mb-4">
                             <label for="goal_timeframe" class="block text-gray-700">Goal Timeframe (years)</label>
-                            <input type="number" id="goal_timeframe" name="goal_timeframe" class="w-full border rounded px-3 py-2" required>
+                            <input type="number" id="goal_timeframe" name="goal_timeframe"
+                                class="w-full border rounded px-3 py-2" required>
                         </div>
                     </div>
 
@@ -236,19 +289,25 @@
                             </div>
                         </div>
                         <div class="mb-4">
-                            <label for="investment_experience" class="block text-gray-700">Investment Experience (years)</label>
-                            <input type="number" id="investment_experience" name="investment_experience" class="w-full border rounded px-3 py-2" required>
+                            <label for="investment_experience" class="block text-gray-700">Investment Experience
+                                (years)</label>
+                            <input type="number" id="investment_experience" name="investment_experience"
+                                class="w-full border rounded px-3 py-2" required>
                         </div>
                         <div class="mb-4">
                             <label for="investment_goals" class="block text-gray-700">Investment Goals</label>
-                            <input type="text" id="investment_goals" name="investment_goals" class="w-full border rounded px-3 py-2" required>
+                            <input type="text" id="investment_goals" name="investment_goals"
+                                class="w-full border rounded px-3 py-2" required>
                         </div>
                     </div>
 
                     <div class="flex justify-between mt-6">
-                        <button type="button" id="prevBtn" class="bg-gray-500 text-white px-4 py-2 rounded" style="display:none;">Previous</button>
-                        <button type="button" id="nextBtn" class="bg-indigo-600 text-white px-4 py-2 rounded">Next</button>
-                        <button type="submit" id="submitBtn" class="bg-green-600 text-white px-4 py-2 rounded hidden">Submit</button>
+                        <button type="button" id="prevBtn" class="bg-gray-500 text-white px-4 py-2 rounded"
+                            style="display:none;">Previous</button>
+                        <button type="button" id="nextBtn"
+                            class="bg-indigo-600 text-white px-4 py-2 rounded">Next</button>
+                        <button type="submit" id="submitBtn"
+                            class="bg-green-600 text-white px-4 py-2 rounded hidden">Submit</button>
                     </div>
                 </form>
             </div>
