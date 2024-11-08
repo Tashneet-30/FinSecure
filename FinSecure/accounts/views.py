@@ -251,7 +251,7 @@ def dashboard(request):
     return render(request, 'dashboard.html', context)
 
 import math
-
+risk_profile_instance = ""
 def fire_number(request):
     # retrieving encryption key from session
     key = request.session['encryption_key']
@@ -406,3 +406,302 @@ def fire_number(request):
 #         # ... other decrypted data
 #     }
 #     return render(request, 'financial_summary.html', context)
+
+from django.shortcuts import render
+from django.http import JsonResponse
+"""import yfinance as yf
+import requests
+import numpy as np
+
+# Function to calculate stock data and volatility
+def get_stock_data():
+    stock_symbols = ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA']
+    stock_data = []
+
+    # Calculate volatility based on historical data
+    def calculate_volatility(stock_symbol):
+        stock = yf.Ticker(stock_symbol)
+        data = stock.history(period="1y")
+        data['Daily Return'] = data['Close'].pct_change()
+        volatility = data['Daily Return'].std() * np.sqrt(252)
+        beta = stock.info.get('beta', 'N/A')
+        price = data['Close'].iloc[-1] if not data['Close'].empty else 'N/A'
+
+        return {
+            'symbol': stock_symbol,
+            'volatility': round(volatility, 2) if volatility else 'N/A',
+            'beta': beta,
+            'price': round(price, 2) if isinstance(price, float) else 'N/A'
+        }
+
+    for symbol in stock_symbols:
+        try:
+            stock_info = calculate_volatility(symbol)
+            stock_data.append(stock_info)
+        except Exception as e:
+            print(f"Error retrieving data for {symbol}: {e}")
+
+    return stock_data
+
+# Function to get cryptocurrency data
+def get_crypto_data():
+    cryptos = ['BTC-USD', 'ETH-USD', 'SOL-USD']
+    crypto_data = []
+
+    for symbol in cryptos:
+        crypto = yf.Ticker(symbol)
+        try:
+            last_close = crypto.history(period='1d')['Close'][0]
+            crypto_data.append({
+                'symbol': symbol,
+                'price': round(last_close, 2)
+            })
+        except Exception as e:
+            print(f"Error retrieving data for {symbol}: {e}")
+
+    return crypto_data
+
+# Function to fetch real estate data using RapidAPI
+def get_real_estate_data():
+    url = "https://us-real-estate-listings.p.rapidapi.com/property/marketTrends"
+    querystring = {"property_url": "https://www.realtor.com/realestateandhomes-detail/2433-S-Ramona-Cir_Tampa_FL_33612_M56257-22633"}
+    headers = {
+        "x-rapidapi-key": "YOUR_RAPIDAPI_KEY",
+        "x-rapidapi-host": "us-real-estate-listings.p.rapidapi.com"
+    }
+
+    response = requests.get(url, headers=headers, params=querystring)
+
+    try:
+        data = response.json()
+        market_trends = data.get('marketTrends', {})
+        median_price = market_trends.get('medianPrice', 'N/A')
+        growth_rate = market_trends.get('priceChange', 'N/A')
+
+        return {
+            'Median Price': median_price,
+            'Growth Rate (%)': growth_rate
+        }
+    except Exception as e:
+        print(f"Error fetching real estate data: {e}")
+        return {}
+
+# Allocation function
+def allocate_savings(total_savings, risk_tolerance):
+    allocation = {}
+
+    if risk_tolerance == 'low':
+        allocation['Real Estate'] = 0.6 * total_savings
+        allocation['Stocks'] = 0.3 * total_savings
+        allocation['Cryptocurrency'] = 0.1 * total_savings
+    elif risk_tolerance == 'medium':
+        allocation['Real Estate'] = 0.4 * total_savings
+        allocation['Stocks'] = 0.4 * total_savings
+        allocation['Cryptocurrency'] = 0.2 * total_savings
+    elif risk_tolerance == 'high':
+        allocation['Real Estate'] = 0.2 * total_savings
+        allocation['Stocks'] = 0.5 * total_savings
+        allocation['Cryptocurrency'] = 0.3 * total_savings
+    else:
+        raise ValueError("Invalid risk tolerance. Choose 'low', 'medium', or 'high'.")
+
+    return allocation
+
+# View to display investment recommendations
+def investment_view(request):
+    total_savings = float(request.GET.get('total_savings', 10000))  # Default to 10,000 if not provided
+    risk_tolerance = request.GET.get('risk_tolerance', 'medium')  # Default to 'medium' if not provided
+
+    # Generate investment recommendations
+    allocation = allocate_savings(total_savings, risk_tolerance)
+    stock_data = get_stock_data()
+    crypto_data = get_crypto_data()
+    real_estate_data = get_real_estate_data()
+
+    context = {
+        'allocation': allocation,
+        'stock_data': stock_data,
+        'crypto_data': crypto_data,
+        'real_estate_data': real_estate_data
+    }
+
+    return render(request, 'res_alloc.html', context)
+"""
+import random
+import yfinance as yf
+import requests
+import numpy as np
+
+# Real-time stock data fetching
+def get_stock_data():
+    stock_symbols = ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA']
+    stock_data = {}
+
+    # Function to calculate volatility based on historical data
+    def calculate_volatility(stock_symbol):
+        stock = yf.Ticker(stock_symbol)
+        data = stock.history(period="1y")
+
+        # Calculate daily returns and volatility
+        data['Daily Return'] = data['Close'].pct_change()
+        volatility = data['Daily Return'].std() * np.sqrt(252)
+        beta = stock.info.get('beta', 'N/A')  # May not be available for some stocks
+
+        return {
+            'volatility': volatility,
+            'beta': beta,
+            'price': data['Close'].iloc[-1]  # Last closing price
+        }
+
+    for symbol in stock_symbols:
+        try:
+            stock_info = calculate_volatility(symbol)
+            stock_data[symbol] = stock_info  # Store data as dictionary with symbol as key
+        except Exception as e:
+            print(f"Error retrieving data for {symbol}: {e}")
+
+    return stock_data
+
+# Function to get cryptocurrency data
+def get_crypto_data():
+    cryptos = ['BTC-USD', 'ETH-USD', 'SOL-USD']
+    crypto_data = {}
+
+    for symbol in cryptos:
+        crypto = yf.Ticker(symbol)
+        last_close = crypto.history(period='1d')['Close'][0]
+        crypto_data[symbol] = last_close
+
+    return crypto_data
+
+# Function to fetch real estate data using RapidAPI
+def get_real_estate_data():
+    url = "https://us-real-estate-listings.p.rapidapi.com/property/marketTrends"
+    querystring = {"property_url": "https://www.realtor.com/realestateandhomes-detail/2433-S-Ramona-Cir_Tampa_FL_33612_M56257-22633"}
+    headers = {
+        "x-rapidapi-key": "2409c5aef7mshed0dcc6a84f6340p11b69ejsn06ec23cf2360",
+        "x-rapidapi-host": "us-real-estate-listings.p.rapidapi.com"
+    }
+
+    response = requests.get(url, headers=headers, params=querystring)
+
+    try:
+        data = response.json()
+        market_trends = data.get('marketTrends', {})
+
+        # Extract relevant data (e.g., median price and growth rate)
+        median_price = market_trends.get('medianPrice', 'N/A')
+        growth_rate = market_trends.get('priceChange', 'N/A')
+
+        return {
+            'Median Price': median_price,
+            'Growth Rate (%)': growth_rate
+        }
+
+    except Exception as e:
+        print(f"Error fetching real estate data: {e}")
+        return {}
+
+# Allocation function
+def allocate_savings(fire_number, risk_profile_instance):
+    allocation = {}
+
+    if risk_profile_instance == 'low':
+        allocation['Real Estate'] = 0.6 * fire_number
+        allocation['Stocks'] = 0.3 * fire_number
+        allocation['Cryptocurrency'] = 0.1 * fire_number
+    elif risk_profile_instance == 'medium':
+        allocation['Real Estate'] = 0.4 * fire_number
+        allocation['Stocks'] = 0.4 * fire_number
+        allocation['Cryptocurrency'] = 0.2 * fire_number
+    elif risk_profile_instance == 'high':
+        allocation['Real Estate'] = 0.2 * fire_number
+        allocation['Stocks'] = 0.5 * fire_number
+        allocation['Cryptocurrency'] = 0.3 * fire_number
+    else:
+        raise ValueError("Invalid risk tolerance. Choose 'low', 'medium', or 'high'.")
+
+    return allocation
+
+# Update the generate_recommendation function
+def generate_recommendation(fire_number, risk_profile_instance):
+    allocation = allocate_savings(fire_number, risk_profile_instance)
+
+    # Fetch stock, crypto, and real estate data
+    stock_data = get_stock_data()
+    crypto_data = get_crypto_data()
+    real_estate_data = get_real_estate_data()
+
+    recommendation = {}
+
+    # Stock allocation
+    stock_allocation = allocation['Stocks']
+    stock_investment = random.choice(list(stock_data.items())) if stock_data else None  # Handle empty stock data
+    recommendation['Stocks'] = {
+        'Investment': stock_allocation,
+        'Recommended Stock': stock_investment[0] if stock_investment else 'N/A',
+        'Expected Return (%)': stock_investment[1].get('volatility', 0) * 100 if stock_investment else 0,
+        'Risk Explanation': f"Volatility: {stock_investment[1].get('volatility', 0):.2f}, Beta: {stock_investment[1].get('beta', 'N/A')}" if stock_investment else 'N/A'
+    }
+
+    # Crypto allocation
+    crypto_allocation = allocation['Cryptocurrency']
+    crypto_investment = random.choice(list(crypto_data.items())) if crypto_data else None  # Handle empty crypto data
+    recommendation['Cryptocurrency'] = {
+        'Investment': crypto_allocation,
+        'Recommended Crypto': crypto_investment[0] if crypto_investment else 'N/A',
+        'Expected Return (%)': crypto_investment[1] if crypto_investment else 0,
+        'Risk Explanation': 'Cryptocurrencies are highly volatile and can provide massive gains or losses.'
+    }
+
+    # Real Estate allocation
+    real_estate_allocation = allocation['Real Estate']
+    recommendation['Real Estate'] = {
+        'Investment': real_estate_allocation,
+        'Median Price': real_estate_data.get('Median Price', 'N/A'),
+        'Growth Rate (%)': real_estate_data.get('Growth Rate (%)', 'N/A'),
+        'Expected Return (%)': real_estate_data.get('Growth Rate (%)', 0),  # Fallback if growth rate not available
+        'Risk Explanation': 'Real estate provides stable, low-risk returns, making it ideal for long-term growth.'
+    }
+
+    return recommendation
+
+
+# Main function to allocate and provide advice
+def resource_allocation_system(fire_number, risk_profile_instance):
+
+    recommendations = generate_recommendation(fire_number, risk_profile_instance)
+
+    print("\nResource Allocation and Investment Advice\n")
+
+    for category, details in recommendations.items():
+        print(f"Category: {category}")
+        print(f"Amount Invested: INR {details['Investment']}")
+        if category == 'Stocks':
+            print(f"Recommended Stock: {details['Recommended Stock']}")
+        elif category == 'Cryptocurrency':
+            print(f"Recommended Crypto: {details['Recommended Crypto']}")
+        else:
+            print(f"Median Price: {details['Median Price']}")
+            print(f"Growth Rate: {details['Growth Rate (%)']}%")
+        print(f"Expected Return: {details['Expected Return (%)']}%")
+        print(f"Risk Explanation: {details['Risk Explanation']}")
+        print("-" * 50)
+        
+
+    return render('res_alloc.html')
+
+from django.shortcuts import render
+from django.http import JsonResponse
+# Adjust the import path to match your file structure
+
+def investment_view(request):
+    if request.method == 'POST':
+        total_savings = float(request.POST.get('total_savings'))
+        risk_tolerance = request.POST.get('risk_tolerance').lower()
+
+        recommendations = resource_allocation_system(total_savings, risk_tolerance)
+
+        return render(request, 'res_alloc.html', {'recommendations': recommendations})
+
+    return render(request, 'res_alloc.html')

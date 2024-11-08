@@ -26,7 +26,7 @@ urlpatterns = [
     path('display-data/', display_key, name='display_key'),
     path('dashboard/', dashboard, name='dashboard'),
     path('fire_number/', fire_number, name='fire_number'),
-
+    path('res-alloc/', investment_view, name='investment_view'),
     path('logout/', logout_view, name='logout'),
 
 
