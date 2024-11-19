@@ -251,7 +251,7 @@ def dashboard(request):
     return render(request, 'dashboard.html', context)
 
 import math
-risk_profile_instance = ""
+
 def fire_number(request):
     # retrieving encryption key from session
     key = request.session['encryption_key']
@@ -479,8 +479,8 @@ def get_real_estate_data():
         growth_rate = market_trends.get('priceChange', 'N/A')
 
         return {
-            'Median Price': median_price,
-            'Growth Rate (%)': growth_rate
+            'Median_Price': median_price,
+            'Growth_Rate': growth_rate
         }
     except Exception as e:
         print(f"Error fetching real estate data: {e}")
@@ -589,13 +589,13 @@ def get_real_estate_data():
         data = response.json()
         market_trends = data.get('marketTrends', {})
 
-        # Extract relevant data (e.g., median price and growth rate)
+        # Extract relevant data (e.g., Median_Price and growth rate)
         median_price = market_trends.get('medianPrice', 'N/A')
         growth_rate = market_trends.get('priceChange', 'N/A')
 
         return {
-            'Median Price': median_price,
-            'Growth Rate (%)': growth_rate
+            'Median_Price': median_price,
+            'Growth_Rate': growth_rate
         }
 
     except Exception as e:
@@ -639,9 +639,10 @@ def generate_recommendation(fire_number, risk_profile_instance):
     stock_investment = random.choice(list(stock_data.items())) if stock_data else None  # Handle empty stock data
     recommendation['Stocks'] = {
         'Investment': stock_allocation,
-        'Recommended Stock': stock_investment[0] if stock_investment else 'N/A',
-        'Expected Return (%)': stock_investment[1].get('volatility', 0) * 100 if stock_investment else 0,
-        'Risk Explanation': f"Volatility: {stock_investment[1].get('volatility', 0):.2f}, Beta: {stock_investment[1].get('beta', 'N/A')}" if stock_investment else 'N/A'
+        'Recommended_Stock': stock_investment[0] if stock_investment else 'N/A',
+        'Expected_Return': stock_investment[1].get('volatility', 0) * 100 if stock_investment else 0,
+        'Current_Price': stock_investment[1].get('price', 'N/A') if stock_investment else 'N/A',  # Current price
+        'Risk_Explanation': f"Volatility: {stock_investment[1].get('volatility', 0):.2f}, Beta: {stock_investment[1].get('beta', 'N/A')}" if stock_investment else 'N/A'
     }
 
     # Crypto allocation
@@ -649,19 +650,19 @@ def generate_recommendation(fire_number, risk_profile_instance):
     crypto_investment = random.choice(list(crypto_data.items())) if crypto_data else None  # Handle empty crypto data
     recommendation['Cryptocurrency'] = {
         'Investment': crypto_allocation,
-        'Recommended Crypto': crypto_investment[0] if crypto_investment else 'N/A',
-        'Expected Return (%)': crypto_investment[1] if crypto_investment else 0,
-        'Risk Explanation': 'Cryptocurrencies are highly volatile and can provide massive gains or losses.'
+        'Recommended_Crypto': crypto_investment[0] if crypto_investment else 'N/A',
+        'Expected_Return': crypto_investment[1] if crypto_investment else 0,
+        'Risk_Explanation': 'Cryptocurrencies are highly volatile and can provide massive gains or losses.'
     }
 
     # Real Estate allocation
     real_estate_allocation = allocation['Real Estate']
     recommendation['Real Estate'] = {
         'Investment': real_estate_allocation,
-        'Median Price': real_estate_data.get('Median Price', 'N/A'),
-        'Growth Rate (%)': real_estate_data.get('Growth Rate (%)', 'N/A'),
-        'Expected Return (%)': real_estate_data.get('Growth Rate (%)', 0),  # Fallback if growth rate not available
-        'Risk Explanation': 'Real estate provides stable, low-risk returns, making it ideal for long-term growth.'
+        'Median_Price': real_estate_data.get('Median_Price', 'N/A'),
+        'Growth_Rate': real_estate_data.get('Growth_Rate', 'N/A'),
+        'Expected_Return': real_estate_data.get('Growth_Rate', 0),  # Fallback if growth rate not available
+        'Risk_Explanation': 'Real estate provides stable, low-risk returns, making it ideal for long-term growth.'
     }
 
     return recommendation
@@ -678,30 +679,29 @@ def resource_allocation_system(fire_number, risk_profile_instance):
         print(f"Category: {category}")
         print(f"Amount Invested: INR {details['Investment']}")
         if category == 'Stocks':
-            print(f"Recommended Stock: {details['Recommended Stock']}")
+            print(f"Recommended_Stock: {details['Recommended_Stock']}")
         elif category == 'Cryptocurrency':
-            print(f"Recommended Crypto: {details['Recommended Crypto']}")
+            print(f"Recommended_Crypto: {details['Recommended_Crypto']}")
         else:
-            print(f"Median Price: {details['Median Price']}")
-            print(f"Growth Rate: {details['Growth Rate (%)']}%")
-        print(f"Expected Return: {details['Expected Return (%)']}%")
-        print(f"Risk Explanation: {details['Risk Explanation']}")
+            print(f"Median_Price: {details['Median_Price']}")
+            print(f"Growth Rate: {details['Growth_Rate']}%")
+        print(f"Expected Return: {details['Expected_Return']}%")
+        print(f"Risk_Explanation: {details['Risk_Explanation']}")
         print("-" * 50)
         
 
-    return render('res_alloc.html')
+    return recommendations
 
 from django.shortcuts import render
 from django.http import JsonResponse
 # Adjust the import path to match your file structure
 
+
+
 def investment_view(request):
     if request.method == 'POST':
         total_savings = float(request.POST.get('total_savings'))
         risk_tolerance = request.POST.get('risk_tolerance').lower()
-
         recommendations = resource_allocation_system(total_savings, risk_tolerance)
-
         return render(request, 'res_alloc.html', {'recommendations': recommendations})
-
     return render(request, 'res_alloc.html')

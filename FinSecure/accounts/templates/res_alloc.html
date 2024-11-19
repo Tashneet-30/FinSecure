@@ -66,7 +66,7 @@
                 </a>
                 <nav class="hidden md:flex items-center space-x-8">
                     <a href="{% url 'dashboard' %}"
-                        class="text-gray-700 hover:text-indigo-600 transition duration-300"></a>
+                        class="text-gray-700 hover:text-indigo-600 transition duration-300">Dashboard</a>
                     <a href="{% url 'logout' %}"
                         class="bg-indigo-600 text-white px-6 py-2 rounded-full hover:bg-indigo-700 transition duration-300 shadow-md hover:shadow-lg">
                         Logout
@@ -82,50 +82,61 @@
                 <h2 class="text-3xl font-bold mb-6 text-indigo-600">Strategic Investment Recommendations: Balancing Risk and Return</h2>
 
                 <div class="mb-8">
-                    <h3 class="text-xl font-semibold mb-4">Allocations</h3>
+                    <h3 class="text-xl font-semibold mb-4"></h3>
                     <p class="text-gray-700 mb-4">
                         Unlock smarter investing with our recommendations. We analyze real-time data to guide you in building a balanced portfolio across stocks, real estate, and crypto. Maximize returns and minimize risk with personalized, data-driven insights.
                     </p>
-                    <ul class="list-disc list-inside text-gray-700 mb-4">
-                        <form method="post">
-                            {% csrf_token %}
-                            <label for="total_savings">Enter your total savings (INR):</label>
-                            <input type="number" id="total_savings" name="total_savings" required><br><br>
-                    
-                            <label for="risk_tolerance">Select your risk tolerance:</label>
-                            <select id="risk_tolerance" name="risk_tolerance" required>
-                                <option value="low">Low</option>
-                                <option value="medium">Medium</option>
-                                <option value="high">High</option>
-                            </select><br><br>
-                    
-                            <button type="submit">Get Recommendations</button>
-                        </form>
+                    <form method="post">
+                        {% csrf_token %}
+                        <label for="total_savings">Enter your FIRE NUMBER:</label>
+                        <input type="number" id="total_savings" name="total_savings" required><br><br>
+                
+                        <label for="risk_tolerance">Select your risk tolerance:</label>
+                        <select id="risk_tolerance" name="risk_tolerance" required>
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                        </select><br><br>
+                
+                        <button type="submit">Get Recommendations</button>
+                        
+                    </form>
+                            <ul class="list-disc list-inside text-gray-700 mb-4">
+                                <br>
+                                <hr><br>
                     
                         <!-- Display recommendations if available -->
                         {% if recommendations %}
-                            <h2>Investment Advice</h2>
+                            
                             <div>
                                 {% for category, details in recommendations.items %}
-                                    <h3>{{ category }}</h3>
+                                    <h2>{{ category }}</h2>
                                     <p><strong>Amount Invested:</strong> INR {{ details.Investment }}</p>
                                     
                                     {% if category == "Stocks" %}
                                         <p><strong>Recommended Stock:</strong> {{ details.Recommended_Stock }}</p>
+                                        <p><strong>Price:</strong> {{ details.Current_Price }}</p>
                                     {% elif category == "Cryptocurrency" %}
                                         <p><strong>Recommended Crypto:</strong> {{ details.Recommended_Crypto }}</p>
                                     {% else %}
-                                        <p><strong>Median Price:</strong> {{ details.Median_Price }}</p>
-                                        <p><strong>Growth Rate:</strong> {{ details.Growth_Rate_ }}%</p>
+                                       <p></p>
                                     {% endif %}
-                    
-                                    <p><strong>Expected Return:</strong> {{ details.Expected_Return_ }}%</p>
+                                    {% if category == "Stocks" or category == "Cryptocurrency" %}
+                                    <p><strong>Expected Return:</strong> {{ details.Expected_Return }}%</p>
                                     <p><strong>Risk Explanation:</strong> {{ details.Risk_Explanation }}</p>
+                                    <br>
                                     <hr>
+                                    <br>
+                                    {% endif %}
                                 {% endfor %}
                             </div>
                         {% endif %}
-                    
+<br>
+                       <!-- <form method="post">
+                            {% csrf_token %}
+                            <button type="submit">Get Recommendations</button>
+                        </form>
+                    -->
                     </ul>
                                     </div>
 
@@ -134,8 +145,7 @@
 
                 <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-8" role="alert">
                     <p class="font-bold">Important:</p>
-                    <p>Your encryption password acts as the key to your data. Without it, your information cannot be
-                        accessed or recovered. Store it in a secure location.</p>
+                    <p>Our platform provides personalized investment recommendations across stocks, cryptocurrency, and real estate. For stock investments, we focus on top-performing options suited to both growth and stability-seeking investors, analyzing market trends and financial health. In cryptocurrency, we keep you informed with insights into promising assets. For real estate, we identify high-potential opportunities by examining economic indicators.</p>
                 </div>
 
                 <div class="text-gray-700">
