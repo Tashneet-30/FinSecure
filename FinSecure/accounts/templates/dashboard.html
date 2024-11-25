@@ -74,8 +74,7 @@
                         class="text-indigo-600 hover:text-indigo-700 font-medium transition duration-300">Dashboard</a>
                     <a href="{% url 'fire_number' %}"
                         class="text-gray-700 hover:text-indigo-600 transition duration-300">FIRE Calculator</a>
-                    <a href="#" class="text-gray-700 hover:text-indigo-600 transition duration-300">Asset Allocation</a>
-                    <a href="#" class="text-gray-700 hover:text-indigo-600 transition duration-300">Settings</a>
+                    <a href="{% url 'investment_view' %}" class="text-gray-700 hover:text-indigo-600 transition duration-300">Asset Allocation</a>
                     <a href="{% url 'logout' %}"
                         class="bg-indigo-600 text-white px-6 py-2 rounded-full hover:bg-indigo-700 transition duration-300 shadow-md hover:shadow-lg">
                         Logout
@@ -132,13 +131,9 @@
                         <div class="text-5xl text-purple-500 mb-4">🚀</div>
                         <h3 class="text-xl font-semibold text-gray-800 mb-4">Quick Actions</h3>
                         <div class="space-y-4">
-                            <a href="#"
+                            <a href="{% url 'fire_number' %}"
                                 class="block bg-indigo-600 text-white text-center py-2 px-4 rounded-full hover:bg-indigo-700 transition duration-300 shadow-md hover:shadow-lg">
-                                Update FIRE Calculator
-                            </a>
-                            <a href="#"
-                                class="block bg-indigo-600 text-white text-center py-2 px-4 rounded-full hover:bg-indigo-700 transition duration-300 shadow-md hover:shadow-lg">
-                                Rebalance Portfolio
+                                FIRE Calculator
                             </a>
                         </div>
                     </div>

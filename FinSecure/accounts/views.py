@@ -16,7 +16,10 @@ from Crypto.Util.Padding import pad, unpad
 from Crypto.Random import get_random_bytes
 import base64
 import json
-
+import random
+import yfinance as yf
+import requests
+import numpy as np
 
 def encrypt_data(data, key):
     data = json.dumps(data).encode()
@@ -527,10 +530,7 @@ def investment_view(request):
 
     return render(request, 'res_alloc.html', context)
 """
-import random
-import yfinance as yf
-import requests
-import numpy as np
+
 
 # Real-time stock data fetching
 def get_stock_data():
@@ -625,6 +625,7 @@ def allocate_savings(fire_number, risk_profile_instance):
 
 # Update the generate_recommendation function
 def generate_recommendation(fire_number, risk_profile_instance):
+    
     allocation = allocate_savings(fire_number, risk_profile_instance)
 
     # Fetch stock, crypto, and real estate data
@@ -651,6 +652,7 @@ def generate_recommendation(fire_number, risk_profile_instance):
     recommendation['Cryptocurrency'] = {
         'Investment': crypto_allocation,
         'Recommended_Crypto': crypto_investment[0] if crypto_investment else 'N/A',
+        'Current_Price': crypto_investment[1] if crypto_investment else 'N/A',
         'Expected_Return': crypto_investment[1] if crypto_investment else 0,
         'Risk_Explanation': 'Cryptocurrencies are highly volatile and can provide massive gains or losses.'
     }
@@ -699,9 +701,60 @@ from django.http import JsonResponse
 
 
 def investment_view(request):
+    key = request.session['encryption_key']
+    
+    # fetching instances from the database
+    personal_instance = Personal.objects.get(user=request.user)
+    income_instance = Income.objects.get(user=request.user)
+    expenses_instance = Expenses.objects.get(user=request.user)
+    savings_instance = Savings.objects.get(user=request.user)
+    assets_instance = Assets.objects.get(user=request.user)
+    financial_goals_instance = FinancialGoals.objects.get(user=request.user)
+    risk_profile_instance = RiskProfile.objects.get(user=request.user)
+
+    f = Fernet(key.encode())
+
+    # decrypting data
+    monthly_income = int(f.decrypt(income_instance.monthly_income.encode()).decode())
+    employer_contributions = int(f.decrypt(income_instance.employer_contributions.encode()).decode())
+    monthly_expenses = int(f.decrypt(expenses_instance.monthly_expenses.encode()).decode())
+    annual_expenses = int(f.decrypt(expenses_instance.annual_expenses.encode()).decode())
+    one_time_expenses = int(f.decrypt(expenses_instance.one_time_expenses.encode()).decode())
+    current_savings = int(f.decrypt(savings_instance.current_savings.encode()).decode())
+    return_on_investments = float(f.decrypt(savings_instance.return_on_investments.encode()).decode()) / 100
+    liabilities = int(f.decrypt(assets_instance.liabilities.encode()).decode())
+    other_assets = int(f.decrypt(assets_instance.other_assets.encode()).decode())
+
+    # incorporating financial goals (retirement lifestyle)
+    if financial_goals_instance.retirement_lifestyle == 'luxurious':
+        fire_multiple = 30
+    elif financial_goals_instance.retirement_lifestyle == 'frugal':
+        fire_multiple = 20
+    else:  # moderate, comfortable
+        fire_multiple = 25
+
+    # FIRE number calculation adjusted for lifestyle
+    fire_number = (monthly_expenses * 12) * fire_multiple
+
+    # accounting for inflation (6% annual)
+    inflation_rate = 0.06
+
+    # factoring in employer contributions to savings
+    monthly_income += employer_contributions
+
+    # years to fire calculation with projected income growth
+    expected_salary_growth = float(f.decrypt(income_instance.expected_salary_growth.encode()).decode()) / 100
+    years_to_fire = (fire_number - current_savings) / (monthly_income * 12)
+
+    # adjust for inflation over the years to FIRE
+    fire_number_adjusted = fire_number * math.pow((1 + inflation_rate), years_to_fire)
+
     if request.method == 'POST':
         total_savings = float(request.POST.get('total_savings'))
         risk_tolerance = request.POST.get('risk_tolerance').lower()
         recommendations = resource_allocation_system(total_savings, risk_tolerance)
-        return render(request, 'res_alloc.html', {'recommendations': recommendations})
-    return render(request, 'res_alloc.html')
+
+        print(int(fire_number_adjusted))
+
+        return render(request, 'res_alloc.html', {'recommendations': recommendations, 'fire_number':int(fire_number_adjusted)})
+    return render(request, 'res_alloc.html', {'fire_number':int(fire_number_adjusted)})
